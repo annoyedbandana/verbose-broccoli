@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mochi</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0f0e17; --surface:#1a1828; --card:#221f35;
+    --accent:#ff6b6b; --accent2:#ffd93d; --accent3:#6bcb77; --accent4:#4d96ff;
+    --text:#fffffe; --muted:#a7a9be; --border:rgba(255,255,255,0.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Mono',monospace;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px 20px 40px;overflow-x:hidden;}
+  .bg-blob{position:fixed;border-radius:50%;filter:blur(80px);opacity:0.1;pointer-events:none;animation:drift 18s ease-in-out infinite alternate;}
+  .blob1{width:500px;height:500px;background:var(--accent);top:-100px;left:-100px;}
+  .blob2{width:400px;height:400px;background:var(--accent4);bottom:-80px;right:-80px;animation-delay:-6s;}
+  .blob3{width:300px;height:300px;background:var(--accent2);top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:-12s;}
+  @keyframes drift{0%{transform:translate(0,0) scale(1);}100%{transform:translate(40px,30px) scale(1.1);}}
+  .app{width:100%;max-width:660px;position:relative;z-index:1;}
+
+  /* HEADER */
+  .header{text-align:center;margin-bottom:20px;animation:fadeDown .6s ease both;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,36px);font-weight:700;line-height:1.1;}
+  h1 em{font-style:italic;color:var(--accent2);}
+  .subtitle{color:var(--muted);font-size:12px;margin-top:5px;}
+
+  /* STREAK */
+  .streak-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,217,61,0.1);border:1px solid rgba(255,217,61,0.22);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--accent2);margin-bottom:12px;}
+
+  /* NAV */
+  .nav{display:flex;justify-content:center;gap:8px;margin-bottom:16px;animation:fadeDown .6s .05s ease both;}
+  .nav-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:7px 18px;border-radius:20px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;transition:all .2s ease;}
+  .nav-btn:hover{border-color:rgba(255,255,255,.2);color:var(--text);}
+  .nav-btn.active{background:rgba(255,107,107,.15);border-color:var(--accent);color:var(--accent);}
+
+  /* PHASE DOTS */
+  .phase-track{display:flex;gap:6px;justify-content:center;margin-bottom:16px;animation:fadeDown .6s .1s ease both;}
+  .phase-dot{width:8px;height:8px;border-radius:50%;background:var(--border);border:1px solid rgba(255,255,255,.12);transition:all .4s ease;}
+  .phase-dot.active{background:var(--accent2);border-color:var(--accent2);box-shadow:0 0 8px var(--accent2);}
+  .phase-dot.done{background:var(--accent3);border-color:var(--accent3);}
+
+  /* CHAT WINDOW */
+  .chat-window{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;animation:fadeUp .6s .15s ease both;box-shadow:0 30px 80px rgba(0,0,0,.4);}
+
+  /* CHAT HEADER with Mochi cat */
+  .chat-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;background:var(--card);}
+  .mochi-cat{width:52px;height:52px;flex-shrink:0;position:relative;}
+  .mochi-cat svg{width:52px;height:52px;animation:mochiFloat 3s ease-in-out infinite;}
+  @keyframes mochiFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-3px);}}
+  .chat-header-name{font-size:14px;font-weight:500;}
+  .chat-header-status{font-size:11px;color:var(--accent3);display:flex;align-items:center;gap:4px;}
+  .status-dot{width:6px;height:6px;border-radius:50%;background:var(--accent3);animation:blink 2s ease-in-out infinite;}
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+  /* MESSAGES */
+  .messages{padding:20px;min-height:240px;max-height:380px;overflow-y:auto;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth;}
+  .messages::-webkit-scrollbar{width:4px;}
+  .messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+  .msg{display:flex;gap:10px;animation:fadeUp .35s ease both;}
+  .msg.user{flex-direction:row-reverse;}
+  .msg-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:2px;}
+  .msg-avatar.ai-av{background:linear-gradient(135deg,var(--accent),var(--accent2));}
+  .msg-avatar.user-av{background:linear-gradient(135deg,var(--accent4),#a855f7);}
+  .msg-bubble{max-width:82%;padding:12px 16px;border-radius:16px;font-size:13px;line-height:1.75;}
+  .msg.ai .msg-bubble{background:var(--card);border:1px solid var(--border);border-top-left-radius:4px;}
+  .msg.user .msg-bubble{background:linear-gradient(135deg,var(--accent4),#6366f1);border-top-right-radius:4px;color:white;}
+
+  /* TYPING */
+  .typing{display:none;gap:10px;align-items:flex-end;}
+  .typing.on{display:flex;}
+  .typing-dots{background:var(--card);border:1px solid var(--border);border-radius:16px;border-top-left-radius:4px;padding:14px 18px;display:flex;gap:5px;align-items:center;}
+  .typing-dots span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:bounce 1.2s ease-in-out infinite;}
+  .typing-dots span:nth-child(2){animation-delay:.2s;}
+  .typing-dots span:nth-child(3){animation-delay:.4s;}
+  @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.5;}30%{transform:translateY(-6px);opacity:1;}}
+
+  /* STANDUP CARD */
+  .standup-card{display:none;margin:0 20px;background:linear-gradient(135deg,rgba(255,217,61,.1),rgba(107,203,119,.08));border:1px solid rgba(255,217,61,.22);border-radius:14px;padding:20px;text-align:center;animation:popIn .4s cubic-bezier(.34,1.56,.64,1) both;}
+  .standup-card.on{display:block;}
+  .standup-emoji{font-size:34px;margin-bottom:8px;}
+  .standup-title{font-family:'Fraunces',serif;font-size:20px;color:var(--accent2);margin-bottom:6px;}
+  .standup-sub{font-size:12px;color:var(--muted);line-height:1.75;margin-bottom:14px;}
+  .standup-btn{background:linear-gradient(135deg,var(--accent2),#ffaa00);border:none;border-radius:10px;color:#1a1200;padding:10px 24px;font-family:'DM Mono',monospace;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s ease;}
+  .standup-btn:hover{transform:scale(1.04);box-shadow:0 4px 20px rgba(255,217,61,.3);}
+
+  /* COUNTDOWN */
+  .countdown-display{display:none;text-align:center;padding:18px 20px 4px;font-family:'Fraunces',serif;font-size:60px;color:var(--accent2);line-height:1;}
+  .countdown-display.on{display:block;}
+  .countdown-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-top:6px;}
+
+  /* ── SPRINT TIMER ── */
+  .sprint-panel{display:none;margin:0 20px;background:linear-gradient(135deg,rgba(77,150,255,.1),rgba(107,203,119,.08));border:1px solid rgba(77,150,255,.25);border-radius:16px;padding:20px;text-align:center;}
+  .sprint-panel.on{display:block;animation:popIn .4s cubic-bezier(.34,1.56,.64,1) both;}
+  .sprint-title{font-family:'Fraunces',serif;font-size:18px;color:var(--accent4);margin-bottom:4px;}
+  .sprint-sub{font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.65;}
+
+  /* Mochi body-double during sprint */
+  .body-double{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:16px;}
+  .body-double-cat{animation:breathe 4s ease-in-out infinite;}
+  @keyframes breathe{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+  .body-double-text{font-size:12px;color:var(--muted);text-align:left;line-height:1.7;}
+
+  /* Ring timer */
+  .timer-ring-wrap{position:relative;width:100px;height:100px;margin:0 auto 14px;}
+  .timer-ring-wrap svg{transform:rotate(-90deg);}
+  .timer-bg{fill:none;stroke:rgba(255,255,255,.08);stroke-width:6;}
+  .timer-fg{fill:none;stroke:var(--accent4);stroke-width:6;stroke-linecap:round;stroke-dasharray:283;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear,stroke .5s ease;}
+  .timer-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Fraunces',serif;font-size:22px;color:var(--text);text-align:center;line-height:1;}
+  .timer-label{font-size:10px;color:var(--muted);display:block;margin-top:2px;}
+
+  .sprint-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:4px;}
+  .sprint-btn{padding:8px 18px;border-radius:20px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;border:none;transition:all .2s ease;}
+  .sprint-btn.primary{background:linear-gradient(135deg,var(--accent4),#6366f1);color:white;}
+  .sprint-btn.secondary{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted);}
+  .sprint-btn:hover{transform:translateY(-1px);}
+
+  /* IMPLEMENTATION INTENTION */
+  .intention-card{display:none;margin:0 20px;background:rgba(107,203,119,.08);border:1px solid rgba(107,203,119,.2);border-radius:14px;padding:18px 20px;animation:popIn .4s ease both;}
+  .intention-card.on{display:block;}
+  .intention-title{font-size:13px;color:var(--accent3);margin-bottom:10px;}
+  .intention-inputs{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+  .intention-inputs input{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:9px 12px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;outline:none;}
+  .intention-inputs input:focus{border-color:rgba(107,203,119,.4);}
+  .intention-inputs input::placeholder{color:var(--muted);}
+  .intention-confirm{background:linear-gradient(135deg,var(--accent3),#38a169);border:none;border-radius:10px;color:#0a2010;padding:9px 20px;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s ease;width:100%;}
+  .intention-confirm:hover{transform:scale(1.02);}
+
+  /* SELF-COMPASSION BREATH */
+  .breath-card{display:none;margin:0 20px;background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.2);border-radius:14px;padding:20px;text-align:center;animation:popIn .4s ease both;}
+  .breath-card.on{display:block;}
+  .breath-circle{width:70px;height:70px;border-radius:50%;background:rgba(168,85,247,.15);border:2px solid rgba(168,85,247,.3);margin:0 auto 12px;animation:breathCircle 4s ease-in-out infinite;}
+  @keyframes breathCircle{0%,100%{transform:scale(1);opacity:.6;}50%{transform:scale(1.3);opacity:1;}}
+  .breath-title{font-family:'Fraunces',serif;font-size:16px;color:#c084fc;margin-bottom:6px;}
+  .breath-sub{font-size:12px;color:var(--muted);line-height:1.75;margin-bottom:14px;}
+  .breath-done{background:rgba(168,85,247,.2);border:1px solid rgba(168,85,247,.3);color:#c084fc;padding:8px 20px;border-radius:20px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;transition:all .2s ease;}
+  .breath-done:hover{background:rgba(168,85,247,.3);}
+
+  /* INPUT AREA */
+  .input-area{padding:14px 18px;border-top:1px solid var(--border);background:var(--card);}
+  .mood-bar{display:none;align-items:center;gap:10px;margin-bottom:10px;font-size:11px;color:var(--muted);}
+  .mood-bar.on{display:flex;}
+  .mood-track{flex:1;height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
+  .mood-fill{height:100%;width:5%;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));border-radius:2px;transition:width .8s ease;}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px;}
+  .chip{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:6px 13px;border-radius:20px;font-size:12px;font-family:'DM Mono',monospace;cursor:pointer;transition:all .2s ease;white-space:nowrap;}
+  .chip:hover{background:rgba(255,107,107,.12);border-color:var(--accent);color:var(--accent);transform:translateY(-1px);}
+  .input-row{display:flex;gap:10px;align-items:flex-end;}
+  textarea{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:11px 14px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;resize:none;outline:none;min-height:42px;max-height:110px;line-height:1.5;transition:border-color .2s ease;}
+  textarea:focus{border-color:rgba(255,107,107,.4);}
+  textarea::placeholder{color:var(--muted);}
+  textarea:disabled{opacity:.4;cursor:not-allowed;}
+  .send-btn{width:42px;height:42px;background:linear-gradient(135deg,var(--accent),#ff8e53);border:none;border-radius:12px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .2s ease;flex-shrink:0;}
+  .send-btn:hover{transform:scale(1.06);box-shadow:0 4px 20px rgba(255,107,107,.4);}
+  .send-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}
+
+  /* WIN */
+  .win-banner{display:none;margin-top:14px;background:linear-gradient(135deg,rgba(107,203,119,.15),rgba(77,150,255,.12));border:1px solid rgba(107,203,119,.3);border-radius:14px;padding:22px;text-align:center;animation:popIn .4s cubic-bezier(.34,1.56,.64,1) both;}
+  .win-banner.on{display:block;}
+  .win-emoji{font-size:40px;margin-bottom:8px;}
+  .win-text{font-family:'Fraunces',serif;font-size:22px;color:var(--accent3);}
+  .win-sub{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.7;}
+  .restart-btn{display:none;margin:12px auto 0;background:transparent;border:1px solid var(--border);color:var(--muted);padding:8px 20px;border-radius:20px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;transition:all .2s ease;}
+  .restart-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .restart-btn.on{display:block;}
+
+  /* STATS */
+  .stats-panel{display:none;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;box-shadow:0 30px 80px rgba(0,0,0,.4);}
+  .stats-panel.on{display:block;animation:fadeUp .4s ease both;}
+  .stats-title{font-family:'Fraunces',serif;font-size:22px;margin-bottom:20px;}
+  .stats-title span{color:var(--accent2);font-style:italic;}
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+  .stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;}
+  .stat-num{font-family:'Fraunces',serif;font-size:32px;font-weight:700;color:var(--accent2);line-height:1;}
+  .stat-label{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:1px;}
+  .section-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;}
+  .amb-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .amb-label{font-size:12px;color:var(--muted);width:100px;flex-shrink:0;}
+  .amb-track{flex:1;height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;}
+  .amb-fill{height:100%;border-radius:4px;transition:width 1s ease;}
+  .fill-green{background:linear-gradient(90deg,var(--accent4),var(--accent3));}
+  .fill-yellow{background:linear-gradient(90deg,var(--accent2),#ff8e53);}
+  .fill-red{background:linear-gradient(90deg,var(--accent),#ff8e53);}
+  .amb-count{font-size:11px;color:var(--muted);width:24px;text-align:right;}
+  .log-list{max-height:220px;overflow-y:auto;margin-top:4px;}
+  .log-list::-webkit-scrollbar{width:4px;}
+  .log-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+  .log-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;font-size:12px;}
+  .log-date{color:var(--muted);margin-bottom:3px;}
+  .log-task-name{color:var(--text);font-size:13px;margin-bottom:5px;}
+  .log-tags{display:flex;gap:6px;flex-wrap:wrap;}
+  .tag{padding:2px 8px;border-radius:10px;font-size:10px;}
+  .tag-green{background:rgba(107,203,119,.15);color:var(--accent3);}
+  .tag-yellow{background:rgba(255,217,61,.12);color:var(--accent2);}
+  .tag-red{background:rgba(255,107,107,.1);color:var(--accent);}
+  .tag-gray{background:rgba(255,255,255,.06);color:var(--muted);}
+  .insight-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:16px 0;font-size:13px;color:var(--muted);line-height:1.75;}
+  .clear-btn{background:transparent;border:1px solid rgba(255,107,107,.2);color:rgba(255,107,107,.5);padding:7px 16px;border-radius:20px;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;transition:all .2s ease;margin-top:14px;}
+  .clear-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .no-data{text-align:center;padding:40px 20px;color:var(--muted);font-size:13px;line-height:1.9;}
+  .no-data-emoji{font-size:38px;margin-bottom:10px;}
+
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-14px);}to{opacity:1;transform:none;}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+  @keyframes popIn{from{opacity:0;transform:scale(.85);}to{opacity:1;transform:scale(1);}}
+  #confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;}
+</style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+<div class="bg-blob blob1"></div>
+<div class="bg-blob blob2"></div>
+<div class="bg-blob blob3"></div>
+
+<div class="app">
+  <div class="header">
+    <div class="streak-badge" id="streak-badge">🔥 <span id="streak-num">0</span> day streak</div>
+    <h1>Let's Do The <em>Thing</em></h1>
+    <p class="subtitle">Mochi is here. No rush, no judgment.</p>
+  </div>
+
+  <div class="nav">
+    <button class="nav-btn active" id="nav-session" onclick="switchTab('session')">session</button>
+    <button class="nav-btn" id="nav-stats" onclick="switchTab('stats')">stats</button>
+  </div>
+
+  <div id="session-tab">
+    <div class="phase-track">
+      <div class="phase-dot active" id="dot0"></div>
+      <div class="phase-dot" id="dot1"></div>
+      <div class="phase-dot" id="dot2"></div>
+      <div class="phase-dot" id="dot3"></div>
+      <div class="phase-dot" id="dot4"></div>
+      <div class="phase-dot" id="dot5"></div>
+      <div class="phase-dot" id="dot6"></div>
+    </div>
+
+    <div class="chat-window">
+      <!-- HEADER with Mochi cat SVG -->
+      <div class="chat-header">
+        <div class="mochi-cat">
+          <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="14,32 8,10 28,26" fill="#f4a0c0"/>
+            <polygon points="16,30 12,14 26,26" fill="#ffcce0"/>
+            <polygon points="66,32 72,10 52,26" fill="#f4a0c0"/>
+            <polygon points="64,30 68,14 54,26" fill="#ffcce0"/>
+            <circle cx="40" cy="46" r="28" fill="#f9c4d8"/>
+            <ellipse cx="32" cy="28" rx="5" ry="3" fill="white" opacity="0.3"/>
+            <circle cx="29" cy="44" r="7" fill="white"/>
+            <circle cx="51" cy="44" r="7" fill="white"/>
+            <circle cx="29" cy="45" r="5" fill="#2d1f3d"/>
+            <circle cx="51" cy="45" r="5" fill="#2d1f3d"/>
+            <circle cx="31" cy="42" r="2" fill="white"/>
+            <circle cx="53" cy="42" r="2" fill="white"/>
+            <circle cx="30.5" cy="47" r="1" fill="white" opacity="0.6"/>
+            <circle cx="52.5" cy="47" r="1" fill="white" opacity="0.6"/>
+            <ellipse cx="18" cy="52" rx="6" ry="4" fill="#ff9ec0" opacity="0.5"/>
+            <ellipse cx="62" cy="52" rx="6" ry="4" fill="#ff9ec0" opacity="0.5"/>
+            <ellipse cx="40" cy="53" rx="2.5" ry="2" fill="#e8607a"/>
+            <path d="M35 57 Q40 62 45 57" stroke="#e8607a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <line x1="6" y1="52" x2="28" y2="54" stroke="#d4a0b5" stroke-width="1" opacity="0.8" stroke-linecap="round"/>
+            <line x1="6" y1="57" x2="28" y2="56" stroke="#d4a0b5" stroke-width="1" opacity="0.8" stroke-linecap="round"/>
+            <line x1="74" y1="52" x2="52" y2="54" stroke="#d4a0b5" stroke-width="1" opacity="0.8" stroke-linecap="round"/>
+            <line x1="74" y1="57" x2="52" y2="56" stroke="#d4a0b5" stroke-width="1" opacity="0.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="chat-header-name">Mochi — your initiation buddy 🐱</div>
+          <div class="chat-header-status"><span class="status-dot"></span> here with you</div>
+        </div>
+      </div>
+
+      <div class="messages" id="messages"></div>
+
+      <!-- STANDUP -->
+      <div class="standup-card" id="standup-card">
+        <div class="standup-emoji">🧠</div>
+        <div class="standup-title">Stand up.</div>
+        <div class="standup-sub">This isn't a gimmick. Action precedes motivation — your motor cortex needs to move before your brain will cooperate. Stand up. Shake it out. You've got this.</div>
+        <button class="standup-btn" onclick="confirmStandUp()">I'm standing ✓</button>
+      </div>
+
+      <!-- COUNTDOWN -->
+      <div class="countdown-display" id="countdown-display">
+        <div id="countdown-num"></div>
+        <div class="countdown-sub" id="countdown-sub"></div>
+      </div>
+
+      <!-- SPRINT TIMER -->
+      <div class="sprint-panel" id="sprint-panel">
+        <div class="sprint-title">Work sprint 🐱</div>
+        <div class="sprint-sub" id="sprint-sub">Mochi is sitting with you. You're not alone in this.</div>
+        <div class="body-double">
+          <div class="body-double-cat">
+            <svg width="64" height="64" viewBox="0 0 80 80" fill="none">
+              <polygon points="14,32 8,10 28,26" fill="#f4a0c0"/>
+              <polygon points="16,30 12,14 26,26" fill="#ffcce0"/>
+              <polygon points="66,32 72,10 52,26" fill="#f4a0c0"/>
+              <polygon points="64,30 68,14 54,26" fill="#ffcce0"/>
+              <circle cx="40" cy="46" r="28" fill="#f9c4d8"/>
+              <ellipse cx="32" cy="28" rx="5" ry="3" fill="white" opacity="0.3"/>
+              <circle cx="29" cy="44" r="7" fill="white"/>
+              <circle cx="51" cy="44" r="7" fill="white"/>
+              <circle cx="29" cy="45" r="5" fill="#2d1f3d"/>
+              <circle cx="51" cy="45" r="5" fill="#2d1f3d"/>
+              <circle cx="31" cy="42" r="2" fill="white"/>
+              <circle cx="53" cy="42" r="2" fill="white"/>
+              <ellipse cx="18" cy="52" rx="6" ry="4" fill="#ff9ec0" opacity="0.5"/>
+              <ellipse cx="62" cy="52" rx="6" ry="4" fill="#ff9ec0" opacity="0.5"/>
+              <ellipse cx="40" cy="53" rx="2.5" ry="2" fill="#e8607a"/>
+              <path d="M35 57 Q40 62 45 57" stroke="#e8607a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="body-double-text" id="body-double-text">Focus. I'm right here with you.<br>Just keep going.</div>
+        </div>
+        <div class="timer-ring-wrap">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle class="timer-bg" cx="50" cy="50" r="45"/>
+            <circle class="timer-fg" id="timer-ring" cx="50" cy="50" r="45"/>
+          </svg>
+          <div class="timer-text">
+            <span id="timer-display">10:00</span>
+            <span class="timer-label" id="timer-label">remaining</span>
+          </div>
+        </div>
+        <div class="sprint-btns">
+          <button class="sprint-btn secondary" onclick="endSprintEarly()">I'm done ✓</button>
+          <button class="sprint-btn secondary" onclick="pauseSprint()" id="pause-btn">pause</button>
+        </div>
+      </div>
+
+      <!-- IMPLEMENTATION INTENTION -->
+      <div class="intention-card" id="intention-card">
+        <div class="intention-title">📌 Let's make it concrete — fill in the blanks:</div>
+        <div class="intention-inputs">
+          <input id="int-when" placeholder="I will do this when... (e.g. after lunch)"/>
+          <input id="int-where" placeholder="I will be at/in... (e.g. my desk, the kitchen)"/>
+          <input id="int-reward" placeholder="Afterwards I'll reward myself with... (optional 🍩)"/>
+        </div>
+        <button class="intention-confirm" onclick="confirmIntention()">Lock it in ✓</button>
+      </div>
+
+      <!-- SELF-COMPASSION BREATH -->
+      <div class="breath-card" id="breath-card">
+        <div class="breath-circle"></div>
+        <div class="breath-title">Let's breathe first.</div>
+        <div class="breath-sub">Breathe in as the circle grows... breathe out as it shrinks.<br>Three rounds. You're safe here.</div>
+        <button class="breath-done" onclick="confirmBreath()">I breathed. I'm okay. →</button>
+      </div>
+
+      <div class="input-area">
+        <div class="mood-bar" id="mood-bar">
+          <span>momentum</span>
+          <div class="mood-track"><div class="mood-fill" id="mood-fill"></div></div>
+          <span id="mood-label">warming up</span>
+        </div>
+        <div class="chips" id="chips"></div>
+        <div class="input-row">
+          <textarea id="user-input" placeholder="type here, or pick an option above 🐱" rows="1"></textarea>
+          <button class="send-btn" id="send-btn" onclick="handleSend()">↑</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="win-banner" id="win-banner">
+      <div class="win-emoji">🎉</div>
+      <div class="win-text" id="win-text">You actually did it.</div>
+      <div class="win-sub" id="win-sub">That took real courage.</div>
+    </div>
+    <button class="restart-btn" id="restart-btn" onclick="restart()">↺ start a new session</button>
+  </div>
+
+  <div class="stats-panel" id="stats-tab"></div>
+</div>
+
+<script>
+// ─── SCRIPT LIBRARY ───────────────────────────────────────────────
+
+const FEELINGS = {
+  anxious:   { reply:"Anxiety means part of you cares deeply. That's actually the right ingredient — just misdirected right now.\n\nTell me: what's the thing you've been putting off? You can be vague." },
+  avoidant:  { reply:"Avoidance is your nervous system trying to protect you. It's not laziness — it's a stress response.\n\nWhat's the task that keeps floating around in your head?" },
+  exhausted: { reply:"You showed up even running on empty. That's not nothing — that's actually a lot.\n\nWe'll keep this light. What's the thing you've been meaning to do?" },
+  ashamed:   { reply:"First — I need you to hear this: shame means you care. And caring is the first ingredient of change.\n\nWhat's been sitting on your list?" },
+  okay:      { reply:"Love that energy. Let's use it before it fades.\n\nWhat's the task you want to tackle today?" },
+  numb:      { reply:"That flat feeling is real. We're going to work with it gently, not against it.\n\nWhat's one thing that's been nagging at you, even quietly?" },
+};
+
+const NORMALIZERS = [
+  n=>`"${n}" — okay. That's been sitting on your shoulders for a while, hasn't it.\n\nWhat makes it feel hard to start? You don't need a perfect answer.`,
+  n=>`Got it. "${n}".\n\nJust naming it takes something. What's the stickiest part — the starting, the doing, or finishing?`,
+  n=>`"${n}". Noted. No judgment at all.\n\nWhat's the feeling that shows up when you think about it?`,
+];
+
+const UNPACK = {
+  overwhelming: "Overwhelm is just too many steps stacked in your head at once. We're going to collapse it into one.\n\nIf you could only do one tiny piece — embarrassingly small — what would it be?",
+  nostart:      "Not knowing where to start is the most common block there is. Everyone with a hard task hits this.\n\nSo let's pick any starting point — even a wrong one. What's the smallest possible action?",
+  failing:      "Fear of failing means you have standards. That's not a flaw — it just needs redirecting.\n\nWhat's a step so tiny it couldn't really fail? Something that barely counts?",
+  shame:        "Shame makes everything heavier. It's hard to move when you're carrying that.\n\nLet's set it down for just five minutes. If it were a friend's task, what's the first tiny thing you'd tell them to do?",
+  perfectionism:"Perfectionism is fear dressed up in high standards. The antidote is imperfect action.\n\nWhat's the messiest, lowest-effort first step that still counts as starting?",
+  other:        "That makes complete sense.\n\nLet's just focus on the first move. What's something so small it takes 2 minutes or less?",
+};
+
+const SHRINK_AFFIRMS = [
+  s=>`"${s}" — yes. Exactly the right size.\n\nBefore we start, one thing first.`,
+  s=>`Perfect. "${s}" is the whole job right now. Nothing else.\n\nAlmost time — but first —`,
+  s=>`That's it. "${s}". That's your entire universe right now.\n\nOne quick thing before the countdown.`,
+];
+
+const POST_STANDUP = [
+  "YES. Look at you — already in motion. 🐱\n\nOkay. Here we go.\n\n3...\n\n2...\n\n1...\n\nGo. Right now. I'll be right here.",
+  "Standing up is step one and you already did it.\n\n3...\n\n2...\n\n1...\n\nGo. Just the tiny step. Nothing else matters right now.",
+  "Motor cortex: activated. 🧠\n\n3...\n\n2...\n\n1...\n\nGo. You've already started — this is just the next part.",
+];
+
+const CELEBRATIONS = [
+  {text:"YOU DID IT.",sub:"I'm so genuinely proud of you. That step was harder than it looked. You showed up and did the thing."},
+  {text:"There it is.",sub:"You broke through the wall. The first step is the hardest one, and you took it. Everything from here is lighter."},
+  {text:"Look at that.",sub:"You just proved to your own brain that you can start. That's not small — that's everything."},
+];
+
+const SPRINT_CHECKINS = [
+  "You're halfway there. Still breathing? Keep going — I'm right here. 🐱",
+  "Five minutes in. You're doing it. One breath at a time.",
+  "Halfway through. Notice how it's not as bad as you thought it would be?",
+];
+
+const SPRINT_DONE_RESPONSES = [
+  s=>`${s} minutes. Done.\n\nHow do you feel? And do you want to keep going for another sprint, or is this a good stopping point?`,
+  s=>`That's ${s} solid minutes of actual work. Mochi is proud. 🐱\n\nWant to ride the momentum for one more sprint? Or celebrate this win?`,
+];
+
+const KEEP_GOING = [
+  "Momentum is yours now. What's the very next small thing?\n\nKeep it simple — just one more step.",
+  "You're in it. Ride the wave.\n\nWhat's next? Keeping it small.",
+  "This is what unstuck feels like. Don't overthink — what's the next move?",
+];
+
+const STUCK = [
+  "That's okay. You tried and that took something real.\n\nCan we make it even smaller? Is there a 30-second version of that step?",
+  "No shame in stopping. Your brain worked hard just getting here.\n\nWant to try a tinier version, or is rest the right call today?",
+  "Sometimes the block wins today. That's allowed.\n\nYou still showed up. Want to try one more tiny attempt, or call it?",
+];
+
+const BUNDLE_PROMPTS = [
+  "Quick question — is there something you enjoy that you could pair with this? Music you love, a drink, a candle, a good playlist?\n\nTemptation bundling works. Let's use it.",
+  "Before you start — what's something pleasant you can have happening at the same time? Research says pairing something enjoyable with a hard task makes it dramatically easier.",
+];
+
+const BODY_DOUBLE_MSGS = [
+  "Focus. I'm right here with you.\nJust keep going.",
+  "You're doing great. Stay with it.\nMochi's watching. 🐱",
+  "Don't stop now. You're in it.\nOne thing at a time.",
+  "Still here. Still proud of you.\nKeep the momentum.",
+];
+
+// ─── STATE ─────────────────────────────────────────────────────────
+let phase=0; // 0=checkin 1=naming 2=unpacking 3=shrinking 4=standup 5=countdown 6=firstdone 7=sprint 8=celebrate
+let momentum=5, taskName="", chosenStep="", normIdx=0, shrinkIdx=0, celIdx=0;
+let sessionStart=null, standUpDone=false, logs=[], streak=0;
+let sprintInterval=null, sprintSecondsLeft=0, sprintPaused=false, sprintTotal=600;
+let midSprintPinged=false;
+
+(async()=>{
+  try{
+    const r=await window.storage.get('mochi-logs'); logs=r?JSON.parse(r.value):[];
+    const s=await window.storage.get('mochi-streak'); const sd=s?JSON.parse(s.value):{count:0,lastDate:null};
+    const today=new Date().toDateString();
+    if(sd.lastDate===today) streak=sd.count;
+    else if(sd.lastDate===new Date(Date.now()-86400000).toDateString()) streak=sd.count;
+    else streak=0;
+    document.getElementById('streak-num').textContent=streak;
+  }catch(e){logs=[];streak=0;}
+})();
+
+async function saveLogs(){try{await window.storage.set('mochi-logs',JSON.stringify(logs));}catch(e){}}
+async function saveStreak(){
+  streak++;
+  const today=new Date().toDateString();
+  try{await window.storage.set('mochi-streak',JSON.stringify({count:streak,lastDate:today}));}catch(e){}
+  document.getElementById('streak-num').textContent=streak;
+}
+
+// ─── UI HELPERS ────────────────────────────────────────────────────
+function addMsg(role,text,delay=0){
+  return new Promise(r=>{
+    setTimeout(()=>{
+      const msgs=document.getElementById('messages');
+      const d=document.createElement('div');
+      d.className='msg '+(role==='user'?'user':'ai');
+      const avClass=role==='user'?'user-av':'ai-av';
+      const avContent=role==='user'?'🧠':'🐱';
+      d.innerHTML=`<div class="msg-avatar ${avClass}">${avContent}</div><div class="msg-bubble">${text.replace(/\n/g,'<br>')}</div>`;
+      msgs.appendChild(d); msgs.scrollTop=msgs.scrollHeight; r();
+    },delay);
+  });
+}
+
+function showTyping(ms=900){
+  return new Promise(r=>{
+    const msgs=document.getElementById('messages');
+    const t=document.createElement('div');
+    t.className='typing on';t.id='typing';
+    t.innerHTML=`<div class="msg-avatar ai-av">🐱</div><div class="typing-dots"><span></span><span></span><span></span></div>`;
+    msgs.appendChild(t);msgs.scrollTop=msgs.scrollHeight;
+    setTimeout(()=>{t.remove();r();},ms);
+  });
+}
+
+function setChips(arr){
+  const c=document.getElementById('chips');c.innerHTML='';
+  arr.forEach(({label,value})=>{
+    const b=document.createElement('button');b.className='chip';b.textContent=label;
+    b.onclick=()=>{document.getElementById('user-input').value=value||label;handleSend();};
+    c.appendChild(b);
+  });
+}
+
+function setDots(p){
+  for(let i=0;i<7;i++){
+    const d=document.getElementById('dot'+i);if(!d)continue;
+    d.className=i<p?'phase-dot done':i===p?'phase-dot active':'phase-dot';
+  }
+}
+
+function setMomentum(add){
+  momentum=Math.min(100,momentum+add);
+  document.getElementById('mood-fill').style.width=momentum+'%';
+  document.getElementById('mood-bar').classList.add('on');
+  const l=document.getElementById('mood-label');
+  l.textContent=momentum<30?'warming up':momentum<60?'building steam':momentum<85?'on a roll!':'🔥 unstoppable';
+}
+
+function lockInput(){
+  document.getElementById('user-input').disabled=true;
+  document.getElementById('send-btn').disabled=true;
+  document.getElementById('chips').innerHTML='';
+}
+function unlockInput(){
+  document.getElementById('user-input').disabled=false;
+  document.getElementById('send-btn').disabled=false;
+}
+
+async function mochiSay(text,ms=950){await showTyping(ms);await addMsg('ai',text);}
+
+// ─── PHASE HANDLERS ────────────────────────────────────────────────
+async function handleSend(){
+  const input=document.getElementById('user-input');
+  const text=input.value.trim();if(!text)return;
+  input.value='';input.style.height='auto';
+  await addMsg('user',text);setMomentum(10);
+  if(phase===0) await handleCheckin(text);
+  else if(phase===1) await handleNaming(text);
+  else if(phase===2) await handleUnpacking(text);
+  else if(phase===3) await handleShrinking(text);
+  else if(phase===6) await handleAfterFirst(text);
+  else if(phase===8) await handleCelebrate(text);
+}
+
+async function handleCheckin(text){
+  const t=text.toLowerCase();
+  let key='okay';
+  if(t.includes('anxi')||t.includes('nervous')||t.includes('scared')||t.includes('wired')) key='anxious';
+  else if(t.includes('avoid')||t.includes('fog')||t.includes('dissoc')) key='avoidant';
+  else if(t.includes('exhaust')||t.includes('tired')||t.includes('drain')||t.includes('empty')) key='exhausted';
+  else if(t.includes('shame')||t.includes('guilty')||t.includes('embarrass')) key='ashamed';
+  else if(t.includes('numb')||t.includes('flat')||t.includes('blank')||t.includes('disconn')) key='numb';
+  await mochiSay(FEELINGS[key].reply,1000);
+  phase=1;setDots(1);
+  setChips([
+    {label:"something work-related"},{label:"a personal project"},
+    {label:"health / life admin"},{label:"I'd rather type it"},
+  ]);
+}
+
+async function handleNaming(text){
+  taskName=text.replace(/^(something|a|an|the)\s+/i,'').trim();
+  if(taskName.length>60) taskName=taskName.substring(0,57)+'...';
+  const response=NORMALIZERS[normIdx%NORMALIZERS.length](taskName);normIdx++;
+  await mochiSay(response,1200);
+  phase=2;setDots(2);
+  setChips([
+    {label:"it feels overwhelming",value:"It feels overwhelming"},
+    {label:"I don't know where to start",value:"I don't know where to start"},
+    {label:"fear of failing",value:"Fear of failing"},
+    {label:"shame / been avoiding too long",value:"Shame about it"},
+    {label:"perfectionism",value:"Perfectionism"},
+  ]);
+}
+
+async function handleUnpacking(text){
+  const t=text.toLowerCase();
+  let key='other';
+  if(t.includes('overwhelm')||t.includes('big')||t.includes('huge')||t.includes('lot')) key='overwhelming';
+  else if(t.includes('start')||t.includes('begin')||t.includes('where')) key='nostart';
+  else if(t.includes('fail')||t.includes('wrong')||t.includes('bad')) key='failing';
+  else if(t.includes('shame')||t.includes('guilty')||t.includes('embarrass')||t.includes('long')) key='shame';
+  else if(t.includes('perfect')||t.includes('right way')||t.includes('good enough')) key='perfectionism';
+  await mochiSay(UNPACK[key],1200);
+
+  // Offer temptation bundling as extra nudge
+  setTimeout(async()=>{
+    const bundle=BUNDLE_PROMPTS[Math.floor(Math.random()*BUNDLE_PROMPTS.length)];
+    await mochiSay(bundle,1100);
+    phase=3;setDots(3);
+    setChips([
+      {label:"open the file / app"},{label:"write one line / sentence"},
+      {label:"set a 5-min timer"},{label:"just look at it for 2 min"},
+      {label:"let me type my own"},
+    ]);
+  },2400);
+}
+
+async function handleShrinking(text){
+  chosenStep=text;
+  const affirm=SHRINK_AFFIRMS[shrinkIdx%SHRINK_AFFIRMS.length](chosenStep);shrinkIdx++;
+  await mochiSay(affirm,1100);
+
+  // Show implementation intention card
+  setTimeout(()=>{
+    lockInput();
+    document.getElementById('intention-card').classList.add('on');
+    document.getElementById('messages').scrollTop=9999;
+  },600);
+  phase=4;setDots(4);
+}
+
+async function confirmIntention(){
+  const when=document.getElementById('int-when').value||'now';
+  const where=document.getElementById('int-where').value||'here';
+  const reward=document.getElementById('int-reward').value;
+  document.getElementById('intention-card').classList.remove('on');
+
+  const rewardLine=reward?`\n\nAnd after: ${reward}. You've earned it in advance.`:'';
+  await mochiSay(`Perfect. Say it out loud:\n\n"I will ${chosenStep} ${when}, at ${where}."\n\nThat's your implementation intention.${rewardLine} Research shows saying it like this makes follow-through 3× more likely.`,1200);
+
+  setTimeout(()=>{
+    lockInput();
+    document.getElementById('standup-card').classList.add('on');
+    document.getElementById('messages').scrollTop=9999;
+  },800);
+  setDots(4);
+}
+
+async function confirmStandUp(){
+  standUpDone=true;
+  document.getElementById('standup-card').classList.remove('on');
+  setMomentum(25);phase=5;setDots(5);
+  const r=POST_STANDUP[Math.floor(Math.random()*POST_STANDUP.length)];
+  await mochiSay(r,800);
+  await runCountdown();
+}
+
+async function runCountdown(){
+  lockInput();
+  const display=document.getElementById('countdown-display');
+  const numEl=document.getElementById('countdown-num');
+  const subEl=document.getElementById('countdown-sub');
+  display.classList.add('on');
+  const steps=[{num:'3',sub:''},{num:'2',sub:''},{num:'1',sub:''},{num:'🚀',sub:'Go. Right now.'}];
+  for(const s of steps){
+    numEl.textContent=s.num;subEl.textContent=s.sub;
+    await new Promise(r=>setTimeout(r,900));
+  }
+  await new Promise(r=>setTimeout(r,500));
+  display.classList.remove('on');
+  phase=6;setDots(6);
+  unlockInput();
+  setChips([
+    {label:"✅ I did it!",value:"I did it!"},
+    {label:"🟡 I tried but stopped",value:"I tried but stopped"},
+    {label:"❌ still can't start",value:"Still can't start"},
+    {label:"⏳ give me a sec",value:"Give me a sec"},
+  ]);
+}
+
+// PHASE 6 — after first step
+async function handleAfterFirst(text){
+  const t=text.toLowerCase();
+  if(t.includes('did it')||t.includes('done')||t.includes('finished')||t.includes('complete')||t.includes('okay i did')) {
+    setMomentum(20);
+    await mochiSay("YES! 🐱 You did the first step. That was the hardest part.\n\nNow — do you want to keep going? I can run you a 10-minute sprint. Mochi will sit with you the whole time.", 1000);
+    setChips([
+      {label:"yes, 10-min sprint! 🔥",value:"yes sprint"},
+      {label:"5-min sprint",value:"5 min sprint"},
+      {label:"I'll keep going on my own",value:"on my own"},
+      {label:"that's enough for today",value:"enough for today"},
+    ]);
+    phase=6; // stay, waiting for sprint choice
+  }
+  else if(t.includes('sprint')||t.includes('yes')||t.includes('10')||t.includes('keep going')||t.includes('more')) {
+    const mins=t.includes('5')?5:10;
+    await startSprint(mins);
+  }
+  else if(t.includes('own')||t.includes('myself')||t.includes('solo')) {
+    await mochiSay("Love it. You've got momentum — ride it.\n\nCome back and tell me how it went 🐱", 900);
+    setChips([{label:"✅ I finished!",value:"I finished!"},{label:"taking a break",value:"taking a break"}]);
+    phase=8;
+  }
+  else if(t.includes('enough')||t.includes('stop')||t.includes('done for today')||t.includes("that's it")) {
+    await mochiSay("Calling it after making progress is wisdom, not giving up.\n\nYou moved the needle today.", 900);
+    await celebrateWin(true);
+  }
+  else if(t.includes('tried')||t.includes('stopped')||t.includes("can't")||t.includes('stuck')) {
+    await mochiSay("That's okay. You tried — that counts.\n\nLet's try something different.", 800);
+    setTimeout(async()=>{
+      document.getElementById('breath-card').classList.add('on');
+      lockInput();
+    },500);
+  }
+  else if(t.includes('sec')||t.includes('wait')||t.includes('minute')) {
+    await mochiSay("Take your time. I'm not going anywhere 🐱", 700);
+    setChips([{label:"okay I'm ready",value:"I did it!"},{label:"✅ I did it!",value:"I did it!"}]);
+  }
+  else {
+    await mochiSay("Got it. Whenever you're ready, just let me know how the first step went. 🐱", 800);
+    setChips([
+      {label:"✅ I did it!",value:"I did it!"},
+      {label:"🟡 sort of",value:"I tried but stopped"},
+    ]);
+  }
+}
+
+// BREATH card confirm
+async function confirmBreath(){
+  document.getElementById('breath-card').classList.remove('on');
+  unlockInput();
+  await mochiSay("Good. Your nervous system just got a little quieter.\n\nWant to try an even smaller version of that step? Like, the tiniest possible thing?", 1000);
+  setChips([
+    {label:"yes, tinier",value:"yes tinier please"},
+    {label:"actually I'll try again",value:"I did it!"},
+    {label:"I need to rest today",value:"rest today"},
+  ]);
+}
+
+// ─── SPRINT TIMER ──────────────────────────────────────────────────
+async function startSprint(minutes=10){
+  phase=7;setDots(6);setMomentum(15);
+  sprintTotal=minutes*60;
+  sprintSecondsLeft=sprintTotal;
+  midSprintPinged=false;
+  sprintPaused=false;
+
+  await mochiSay(`${minutes} minutes. Mochi is sitting right next to you.\n\nFocus on "${chosenStep}" and anything that comes naturally after. Go.`, 800);
+
+  document.getElementById('sprint-panel').classList.add('on');
+  document.getElementById('sprint-sub').textContent=`${minutes}-minute sprint · Mochi is with you`;
+  updateSprintDisplay();
+
+  // Rotate body-double messages
+  let bdIdx=0;
+  const bdInterval=setInterval(()=>{
+    bdIdx=(bdIdx+1)%BODY_DOUBLE_MSGS.length;
+    document.getElementById('body-double-text').innerHTML=BODY_DOUBLE_MSGS[bdIdx].replace('\n','<br>');
+  },25000);
+
+  sprintInterval=setInterval(async()=>{
+    if(sprintPaused) return;
+    sprintSecondsLeft--;
+    updateSprintDisplay();
+
+    // Mid-sprint check-in
+    if(!midSprintPinged && sprintSecondsLeft===Math.floor(sprintTotal/2)){
+      midSprintPinged=true;
+      const msg=SPRINT_CHECKINS[Math.floor(Math.random()*SPRINT_CHECKINS.length)];
+      await addMsg('ai',msg);
+      document.getElementById('messages').scrollTop=9999;
+    }
+
+    if(sprintSecondsLeft<=0){
+      clearInterval(sprintInterval);clearInterval(bdInterval);
+      document.getElementById('sprint-panel').classList.remove('on');
+      setMomentum(25);
+      const mins=Math.round(sprintTotal/60);
+      const r=SPRINT_DONE_RESPONSES[Math.floor(Math.random()*SPRINT_DONE_RESPONSES.length)](mins);
+      await mochiSay(r,900);
+      phase=8;setDots(7);
+      setChips([
+        {label:"another sprint! 🔥",value:"another sprint"},
+        {label:"I'm done for today 🎉",value:"I'm done!"},
+        {label:"taking a break",value:"taking a break"},
+      ]);
+      unlockInput();
+    }
+  },1000);
+  lockInput();
+}
+
+function updateSprintDisplay(){
+  const m=Math.floor(sprintSecondsLeft/60);
+  const s=sprintSecondsLeft%60;
+  document.getElementById('timer-display').textContent=`${m}:${s.toString().padStart(2,'0')}`;
+  const pct=(sprintSecondsLeft/sprintTotal);
+  const circumference=283;
+  document.getElementById('timer-ring').style.strokeDashoffset=(circumference*(1-pct)).toString();
+  const hue=pct>0.5?'var(--accent4)':pct>0.2?'var(--accent2)':'var(--accent)';
+  document.getElementById('timer-ring').style.stroke=hue;
+}
+
+function pauseSprint(){
+  sprintPaused=!sprintPaused;
+  document.getElementById('pause-btn').textContent=sprintPaused?'resume':'pause';
+  document.getElementById('timer-label').textContent=sprintPaused?'paused':'remaining';
+}
+
+async function endSprintEarly(){
+  if(sprintInterval) clearInterval(sprintInterval);
+  document.getElementById('sprint-panel').classList.remove('on');
+  const elapsed=Math.round((sprintTotal-sprintSecondsLeft)/60);
+  setMomentum(20);
+  await mochiSay(`${elapsed} minutes of actual work. Mochi is proud. 🐱\n\nDo you want to keep going, or is this a good stopping point?`,900);
+  phase=8;setDots(7);
+  setChips([
+    {label:"another sprint! 🔥",value:"another sprint"},
+    {label:"I'm done — celebrate! 🎉",value:"I'm done!"},
+    {label:"taking a break",value:"taking a break"},
+  ]);
+  unlockInput();
+}
+
+// PHASE 8 — post-sprint / celebrate
+async function handleCelebrate(text){
+  const t=text.toLowerCase();
+  if(t.includes('sprint')||t.includes('another')||t.includes('more')||t.includes('keep')) {
+    await startSprint(10);
+  }
+  else if(t.includes('done')||t.includes('finish')||t.includes('complete')) {
+    await celebrateWin(false);
+  }
+  else if(t.includes('break')||t.includes('rest')||t.includes('stop')) {
+    await mochiSay("Rest is part of the process. You worked. Now you recover.\n\nCome back when you're ready. 🐱",900);
+    await celebrateWin(true);
+  }
+  else {
+    const r=KEEP_GOING[Math.floor(Math.random()*KEEP_GOING.length)];
+    await mochiSay(r,900);
+    setChips([
+      {label:"✅ all done!",value:"I'm done!"},
+      {label:"one more sprint",value:"another sprint"},
+    ]);
+  }
+}
+
+// ─── WIN ───────────────────────────────────────────────────────────
+async function celebrateWin(partial=false){
+  setDots(7);setMomentum(30);lockInput();
+  const cel=CELEBRATIONS[celIdx%CELEBRATIONS.length];celIdx++;
+  document.getElementById('win-text').textContent=cel.text;
+  document.getElementById('win-sub').textContent=partial?"You did something today. That matters more than you know.":cel.sub;
+  document.getElementById('win-banner').classList.add('on');
+  document.getElementById('restart-btn').classList.add('on');
+  const ambiguity=partial?1:2;
+  const entry={date:new Date().toLocaleString(),task:taskName||"unnamed task",ambiguity,standUp:standUpDone,duration:sessionStart?Math.round((Date.now()-sessionStart)/60000):null};
+  logs.unshift(entry);
+  await saveLogs();
+  await saveStreak();
+  launchConfetti();
+}
+
+// ─── STATS ─────────────────────────────────────────────────────────
+function switchTab(tab){
+  document.getElementById('nav-session').classList.toggle('active',tab==='session');
+  document.getElementById('nav-stats').classList.toggle('active',tab==='stats');
+  document.getElementById('session-tab').style.display=tab==='session'?'block':'none';
+  const sp=document.getElementById('stats-tab');
+  sp.style.display=tab==='stats'?'block':'none';
+  if(tab==='stats'){sp.classList.add('on');renderStats();}
+}
+
+function renderStats(){
+  const panel=document.getElementById('stats-tab');
+  if(logs.length===0){panel.innerHTML=`<div class="no-data"><div class="no-data-emoji">🐱</div><div>No sessions yet.</div><div style="margin-top:6px;font-size:12px;">Complete a session and your progress will live here.</div></div>`;return;}
+  const total=logs.length,standUps=logs.filter(l=>l.standUp).length;
+  const amb2=logs.filter(l=>l.ambiguity===2).length,amb1=logs.filter(l=>l.ambiguity===1).length,amb0=logs.filter(l=>l.ambiguity===0).length;
+  const avgAmb=(logs.reduce((a,b)=>a+b.ambiguity,0)/total).toFixed(1);
+  const standPct=Math.round((standUps/total)*100);
+  const insight=avgAmb>=1.7?"Strong momentum trend. You're building real capacity — this is working. 🔥":avgAmb>=1.0?"Steady progress. Each session is shifting something, even when it's hard to feel.":"Rough patches are data, not failure. Try shrinking the first step even further next time.";
+  const logHTML=logs.slice(0,20).map(l=>{
+    const ambTag=l.ambiguity===2?'<span class="tag tag-green">completed ✓</span>':l.ambiguity===1?'<span class="tag tag-yellow">partial win</span>':'<span class="tag tag-red">showed up</span>';
+    const suTag=l.standUp?'<span class="tag tag-gray">stood up 🧠</span>':'';
+    const durTag=l.duration?`<span class="tag tag-gray">${l.duration}min</span>`:'';
+    return `<div class="log-item"><div class="log-date">${l.date}</div><div class="log-task-name">${l.task}</div><div class="log-tags">${ambTag}${suTag}${durTag}</div></div>`;
+  }).join('');
+  panel.innerHTML=`
+    <div class="stats-title">Your <span>momentum</span></div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">sessions</div></div>
+      <div class="stat-card"><div class="stat-num">${streak}</div><div class="stat-label">day streak 🔥</div></div>
+      <div class="stat-card"><div class="stat-num">${avgAmb}</div><div class="stat-label">avg completion</div></div>
+      <div class="stat-card"><div class="stat-num">${standPct}%</div><div class="stat-label">motor activation</div></div>
+    </div>
+    <div class="section-label" style="margin-bottom:12px;">session outcomes</div>
+    <div style="margin-bottom:18px;">
+      <div class="amb-row"><div class="amb-label">completed</div><div class="amb-track"><div class="amb-fill fill-green" style="width:${(amb2/total)*100}%"></div></div><div class="amb-count">${amb2}</div></div>
+      <div class="amb-row"><div class="amb-label">partial win</div><div class="amb-track"><div class="amb-fill fill-yellow" style="width:${(amb1/total)*100}%"></div></div><div class="amb-count">${amb1}</div></div>
+      <div class="amb-row"><div class="amb-label">showed up</div><div class="amb-track"><div class="amb-fill fill-red" style="width:${(amb0/total)*100}%"></div></div><div class="amb-count">${amb0}</div></div>
+    </div>
+    <div class="insight-box">${insight}</div>
+    <div class="section-label" style="margin:16px 0 10px;">history</div>
+    <div class="log-list">${logHTML}</div>
+    <button class="clear-btn" onclick="clearLogs()">clear all data</button>`;
+}
+
+async function clearLogs(){
+  if(!confirm("Clear all session history?"))return;
+  logs=[];await saveLogs();renderStats();
+}
+
+// ─── CONFETTI ──────────────────────────────────────────────────────
+function launchConfetti(){
+  const canvas=document.getElementById('confetti-canvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const colors=['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#a855f7','#ffb8cc'];
+  const pieces=Array.from({length:120},()=>({x:Math.random()*canvas.width,y:-10,r:Math.random()*5+3,d:Math.random()*100,color:colors[Math.floor(Math.random()*colors.length)],tiltAngle:0,tiltSpeed:Math.random()*.1+.05}));
+  let frame=0;
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{p.tiltAngle+=p.tiltSpeed;p.y+=Math.cos(p.d+frame/20)+2;const tilt=Math.sin(p.tiltAngle)*12;ctx.beginPath();ctx.lineWidth=p.r;ctx.strokeStyle=p.color;ctx.moveTo(p.x+tilt+p.r/2,p.y);ctx.lineTo(p.x+tilt,p.y+p.r/2);ctx.stroke();});
+    frame++;if(frame<200)requestAnimationFrame(draw);else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  draw();
+}
+
+// ─── RESTART ───────────────────────────────────────────────────────
+function restart(){
+  phase=0;momentum=5;taskName='';chosenStep='';standUpDone=false;sessionStart=Date.now();
+  if(sprintInterval)clearInterval(sprintInterval);sprintInterval=null;
+  document.getElementById('messages').innerHTML='';
+  ['win-banner','standup-card','countdown-display','sprint-panel','intention-card','breath-card'].forEach(id=>document.getElementById(id).classList.remove('on'));
+  document.getElementById('restart-btn').classList.remove('on');
+  document.getElementById('mood-bar').classList.remove('on');
+  document.getElementById('mood-fill').style.width='5%';
+  unlockInput();
+  for(let i=0;i<7;i++){const d=document.getElementById('dot'+i);if(d)d.className=i===0?'phase-dot active':'phase-dot';}
+  init();
+}
+
+// ─── INPUT ─────────────────────────────────────────────────────────
+document.getElementById('user-input').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,110)+'px';});
+document.getElementById('user-input').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();handleSend();}});
+
+// ─── INIT ──────────────────────────────────────────────────────────
+async function init(){
+  sessionStart=Date.now();
+  const openers=[
+    "Hey. I'm really glad you're here. 🐱\n\nBefore we do anything — how are you feeling right now? Not about the task. Just you, right now.",
+    "You showed up. That's already something.\n\nHow are you doing right now — honestly, in this moment?",
+    "Welcome. No pressure, no rush, no judgment.\n\nJust check in with me first — how are you feeling?",
+  ];
+  await mochiSay(openers[Math.floor(Math.random()*openers.length)],1000);
+  setChips([
+    {label:"anxious / wired",value:"anxious"},
+    {label:"avoidant / foggy",value:"avoidant"},
+    {label:"exhausted",value:"exhausted"},
+    {label:"ashamed about it",value:"ashamed"},
+    {label:"numb / disconnected",value:"numb"},
+    {label:"okay, let's go",value:"okay"},
+  ]);
+}
+
+init();
+</script>
+</body>
+</html>
