@@ -6,13 +6,13 @@
 <title>Mochi</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0f0e17;--surface:#1a1828;--card:#221f35;--accent:#ff6b6b;--accent2:#ffd93d;--accent3:#6bcb77;--accent4:#4d96ff;--purple:#a855f7;--text:#fffffe;--muted:#a7a9be;--border:rgba(255,255,255,0.08);}
+:root{--bg:#1a0d12;--surface:#231118;--card:#2e1520;--accent:#c9748a;--accent2:#ffd93d;--accent3:#d4926e;--accent4:#b87fa0;--purple:#c47fa0;--rose:#e8a5b8;--gold:#c9956a;--text:#fdf0f3;--muted:#b8909a;--border:rgba(255,220,230,0.08);}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Mono',monospace;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px 20px 40px;overflow-x:hidden;}
 .bg-blob{position:fixed;border-radius:50%;filter:blur(80px);opacity:0.1;pointer-events:none;animation:drift 18s ease-in-out infinite alternate;}
-.blob1{width:500px;height:500px;background:var(--accent);top:-100px;left:-100px;}
-.blob2{width:400px;height:400px;background:var(--accent4);bottom:-80px;right:-80px;animation-delay:-6s;}
-.blob3{width:300px;height:300px;background:var(--accent2);top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:-12s;}
+.blob1{width:500px;height:500px;background:#8b2252;top:-100px;left:-100px;}
+.blob2{width:400px;height:400px;background:#7a3050;bottom:-80px;right:-80px;animation-delay:-6s;}
+.blob3{width:300px;height:300px;background:#c9956a;top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:-12s;}
 @keyframes drift{0%{transform:translate(0,0)scale(1);}100%{transform:translate(40px,30px)scale(1.1);}}
 .app{width:100%;max-width:660px;position:relative;z-index:1;}
 
@@ -27,13 +27,13 @@ h1 em{font-style:italic;color:var(--accent2);}
 .nav{display:flex;justify-content:center;gap:8px;margin-bottom:14px;}
 .nav-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:6px 16px;border-radius:20px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;transition:all .2s;}
 .nav-btn:hover{border-color:rgba(255,255,255,.2);color:var(--text);}
-.nav-btn.active{background:rgba(107,203,119,.12);border-color:var(--accent3);color:var(--accent3);}
+.nav-btn.active{background:rgba(201,148,138,.15);border-color:var(--accent);color:var(--accent);}
 
 /* PHASE DOTS */
 .phase-track{display:flex;gap:5px;justify-content:center;margin-bottom:14px;}
 .phase-dot{width:8px;height:8px;border-radius:50%;background:var(--border);border:1px solid rgba(255,255,255,.12);transition:all .4s;}
-.phase-dot.active{background:var(--accent2);border-color:var(--accent2);box-shadow:0 0 8px var(--accent2);}
-.phase-dot.done{background:var(--accent3);border-color:var(--accent3);}
+.phase-dot.active{background:var(--accent2);border-color:var(--accent2);box-shadow:0 0 8px rgba(255,217,61,.6);}
+.phase-dot.done{background:var(--accent);border-color:var(--accent);}
 
 /* CHAT */
 .chat-window{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4);animation:fadeUp .6s .1s ease both;}
@@ -42,18 +42,18 @@ h1 em{font-style:italic;color:var(--accent2);}
 .mochi-plant svg{width:46px;height:46px;animation:mochiFloat 3.5s ease-in-out infinite;}
 @keyframes mochiFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
 .chat-header-name{font-size:13px;font-weight:500;flex:1;}
-.chat-header-status{font-size:11px;color:var(--accent3);display:flex;align-items:center;gap:4px;}
-.status-dot{width:6px;height:6px;border-radius:50%;background:var(--accent3);animation:blink 2s ease-in-out infinite;}
+.chat-header-status{font-size:11px;color:var(--rose);display:flex;align-items:center;gap:4px;}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--rose);animation:blink 2s ease-in-out infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
 
 /* SOUND BAR */
 .sound-bar{display:flex;align-items:center;gap:6px;padding:6px 10px;border-top:1px solid var(--border);background:var(--card);flex-wrap:wrap;}
 .sound-label{font-size:10px;color:var(--muted);letter-spacing:.5px;margin-right:2px;}
 .sound-btn{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);padding:3px 10px;border-radius:12px;font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;transition:all .15s;}
-.sound-btn:hover{border-color:rgba(107,203,119,.4);color:var(--accent3);}
-.sound-btn.on{background:rgba(107,203,119,.15);border-color:var(--accent3);color:var(--accent3);}
+.sound-btn:hover{border-color:rgba(201,116,138,.4);color:var(--accent);}
+.sound-btn.on{background:rgba(201,116,138,.18);border-color:var(--accent);color:var(--accent);}
 .vol-slider{-webkit-appearance:none;appearance:none;width:70px;height:3px;border-radius:2px;background:rgba(255,255,255,.1);outline:none;cursor:pointer;}
-.vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--accent3);cursor:pointer;}
+.vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--accent);cursor:pointer;}
 
 /* MESSAGES */
 .messages{padding:18px;min-height:220px;max-height:360px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth;}
@@ -62,8 +62,8 @@ h1 em{font-style:italic;color:var(--accent2);}
 .msg{display:flex;gap:9px;animation:fadeUp .3s ease both;}
 .msg.user{flex-direction:row-reverse;}
 .msg-avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:2px;}
-.msg-avatar.ai-av{background:linear-gradient(135deg,var(--accent3),#38a169);}
-.msg-avatar.user-av{background:linear-gradient(135deg,var(--accent4),var(--purple));}
+.msg-avatar.ai-av{background:linear-gradient(135deg,#8b2252,#c9748a);}
+.msg-avatar.user-av{background:linear-gradient(135deg,#7a3050,#b87fa0);}
 .msg-bubble{max-width:83%;padding:11px 15px;border-radius:15px;font-size:13px;line-height:1.8;}
 .msg.ai .msg-bubble{background:var(--card);border:1px solid var(--border);border-top-left-radius:4px;}
 .msg.user .msg-bubble{background:linear-gradient(135deg,var(--accent4),#6366f1);border-top-right-radius:4px;color:white;}
@@ -90,10 +90,10 @@ h1 em{font-style:italic;color:var(--accent2);}
 /* VALUE ANCHOR */
 .value-card{display:none;margin:0 18px;background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.2);border-radius:14px;padding:16px 18px;}
 .value-card.on{display:block;animation:popIn .4s ease both;}
-.value-title{font-size:12px;color:var(--purple);margin-bottom:8px;}
+.value-title{font-size:12px;color:var(--rose);margin-bottom:8px;}
 .value-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:9px 12px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;outline:none;margin-bottom:10px;}
-.value-input:focus{border-color:rgba(168,85,247,.4);}
-.value-confirm{background:linear-gradient(135deg,var(--purple),#6366f1);border:none;border-radius:10px;color:white;padding:9px 20px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;width:100%;transition:all .2s;}
+.value-input:focus{border-color:rgba(201,116,138,.4);}
+.value-confirm{background:linear-gradient(135deg,#8b2252,var(--purple));border:none;border-radius:10px;color:white;padding:9px 20px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;width:100%;transition:all .2s;}
 .value-confirm:hover{transform:scale(1.01);}
 
 /* INTENTION WORD */
@@ -102,30 +102,30 @@ h1 em{font-style:italic;color:var(--accent2);}
 .word-title{font-size:12px;color:var(--accent2);margin-bottom:10px;}
 .word-options{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:10px;}
 .word-opt{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--muted);padding:6px 14px;border-radius:20px;font-size:12px;cursor:pointer;transition:all .2s;}
-.word-opt:hover,.word-opt.sel{background:rgba(255,217,61,.15);border-color:var(--accent2);color:var(--accent2);}
-.word-confirm{background:linear-gradient(135deg,var(--accent2),#ffaa00);border:none;border-radius:10px;color:#1a1200;padding:8px 20px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;margin-top:4px;transition:all .2s;}
+.word-opt:hover,.word-opt.sel{background:rgba(255,217,61,.12);border-color:var(--accent2);color:var(--accent2);}
+.word-confirm{background:linear-gradient(135deg,var(--accent2),#c9956a);border:none;border-radius:10px;color:#1a1200;padding:8px 20px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;margin-top:4px;transition:all .2s;}
 
 /* STANDUP CARD */
-.standup-card{display:none;margin:0 18px;background:linear-gradient(135deg,rgba(255,217,61,.1),rgba(107,203,119,.08));border:1px solid rgba(255,217,61,.22);border-radius:14px;padding:18px;text-align:center;}
+.standup-card{display:none;margin:0 18px;background:linear-gradient(135deg,rgba(255,217,61,.08),rgba(201,116,138,.08));border:1px solid rgba(255,217,61,.2);border-radius:14px;padding:18px;text-align:center;}
 .standup-card.on{display:block;animation:popIn .4s cubic-bezier(.34,1.56,.64,1) both;}
 .standup-emoji{font-size:28px;margin-bottom:6px;}
 .standup-title{font-family:'Fraunces',serif;font-size:18px;color:var(--accent2);margin-bottom:5px;}
 .standup-sub{font-size:12px;color:var(--muted);line-height:1.75;margin-bottom:12px;}
 .standup-options{display:flex;flex-direction:column;gap:7px;}
 .standup-btn{border:none;border-radius:10px;padding:9px 18px;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;}
-.standup-btn.primary{background:linear-gradient(135deg,var(--accent2),#ffaa00);color:#1a1200;}
-.standup-btn.secondary{background:rgba(107,203,119,.15);border:1px solid rgba(107,203,119,.25);color:var(--accent3);}
+.standup-btn.primary{background:linear-gradient(135deg,var(--accent2),#e8a030);color:#1a0800;}
+.standup-btn.secondary{background:rgba(201,116,138,.12);border:1px solid rgba(201,116,138,.25);color:var(--accent);}
 .standup-btn:hover{transform:scale(1.02);}
 
 /* SITUPS */
-.situps-card{display:none;margin:0 18px;background:linear-gradient(135deg,rgba(107,203,119,.1),rgba(77,150,255,.08));border:1px solid rgba(107,203,119,.25);border-radius:14px;padding:18px;text-align:center;}
+.situps-card{display:none;margin:0 18px;background:linear-gradient(135deg,rgba(201,116,138,.1),rgba(139,34,82,.08));border:1px solid rgba(201,116,138,.22);border-radius:14px;padding:18px;text-align:center;}
 .situps-card.on{display:block;animation:popIn .4s cubic-bezier(.34,1.56,.64,1) both;}
-.situps-count{font-family:'Fraunces',serif;font-size:50px;color:var(--accent3);line-height:1;margin:6px 0;}
+.situps-count{font-family:'Fraunces',serif;font-size:50px;color:var(--accent);line-height:1;margin:6px 0;}
 .situps-label{font-size:12px;color:var(--muted);margin-bottom:14px;}
 .situps-progress{display:flex;gap:6px;justify-content:center;margin-bottom:14px;}
 .situp-dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);transition:all .3s;}
-.situp-dot.done{background:var(--accent3);border-color:var(--accent3);box-shadow:0 0 6px var(--accent3);}
-.situps-btn{background:linear-gradient(135deg,var(--accent3),#38a169);border:none;border-radius:10px;color:#0a2010;padding:10px 22px;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;}
+.situp-dot.done{background:var(--accent);border-color:var(--accent);box-shadow:0 0 6px rgba(201,116,138,.6);}
+.situps-btn{background:linear-gradient(135deg,#8b2252,#c9748a);border:none;border-radius:10px;color:#fdf0f3;padding:10px 22px;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;}
 .situps-btn:hover{transform:scale(1.03);}
 
 /* COUNTDOWN */
@@ -134,9 +134,9 @@ h1 em{font-style:italic;color:var(--accent2);}
 .countdown-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-top:5px;}
 
 /* SPRINT PANEL */
-.sprint-panel{display:none;margin:0 18px;background:linear-gradient(135deg,rgba(77,150,255,.1),rgba(107,203,119,.07));border:1px solid rgba(77,150,255,.22);border-radius:16px;padding:18px;text-align:center;}
+.sprint-panel{display:none;margin:0 18px;background:linear-gradient(135deg,rgba(139,34,82,.12),rgba(201,116,138,.07));border:1px solid rgba(201,116,138,.2);border-radius:16px;padding:18px;text-align:center;}
 .sprint-panel.on{display:block;animation:popIn .4s cubic-bezier(.34,1.56,.64,1) both;}
-.sprint-title{font-family:'Fraunces',serif;font-size:17px;color:var(--accent4);margin-bottom:3px;}
+.sprint-title{font-family:'Fraunces',serif;font-size:17px;color:var(--rose);margin-bottom:3px;}
 .sprint-sub{font-size:12px;color:var(--muted);margin-bottom:6px;line-height:1.6;}
 
 /* ANCHOR WORD display during sprint */
@@ -144,7 +144,7 @@ h1 em{font-style:italic;color:var(--accent2);}
 
 /* BODY DOUBLE */
 .body-double{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px;}
-.body-double-plant{animation:breathe2 4s ease-in-out infinite;}
+.body-double-plant{animation:breathe2 4s ease-in-out infinite;filter:drop-shadow(0 0 8px rgba(201,116,138,.3));}
 @keyframes breathe2{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
 .body-double-text{font-size:12px;color:var(--muted);text-align:left;line-height:1.75;}
 
@@ -152,13 +152,13 @@ h1 em{font-style:italic;color:var(--accent2);}
 .timer-ring-wrap{position:relative;width:96px;height:96px;margin:0 auto 12px;}
 .timer-ring-wrap svg{transform:rotate(-90deg);}
 .timer-bg{fill:none;stroke:rgba(255,255,255,.07);stroke-width:6;}
-.timer-fg{fill:none;stroke:var(--accent4);stroke-width:6;stroke-linecap:round;stroke-dasharray:283;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear,stroke .5s;}
+.timer-fg{fill:none;stroke:var(--accent);stroke-width:6;stroke-linecap:round;stroke-dasharray:283;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear,stroke .5s;}
 .timer-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Fraunces',serif;font-size:20px;color:var(--text);text-align:center;line-height:1;}
 .timer-label{font-size:10px;color:var(--muted);display:block;margin-top:2px;}
 
 .sprint-btns{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:8px;}
 .sprint-btn{padding:7px 16px;border-radius:18px;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;border:none;transition:all .2s;}
-.sprint-btn.primary{background:linear-gradient(135deg,var(--accent4),#6366f1);color:white;}
+.sprint-btn.primary{background:linear-gradient(135deg,#8b2252,#c9748a);color:white;}
 .sprint-btn.secondary{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted);}
 .sprint-btn.danger{background:rgba(255,107,107,.12);border:1px solid rgba(255,107,107,.2);color:var(--accent);}
 .sprint-btn:hover{transform:translateY(-1px);}
@@ -168,7 +168,7 @@ h1 em{font-style:italic;color:var(--accent2);}
 .focus-rescue.on{display:block;}
 .rescue-title{font-size:13px;color:var(--accent);margin-bottom:8px;}
 .rescue-msg{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:10px;}
-.rescue-btn{background:linear-gradient(135deg,var(--accent),#ff8e53);border:none;border-radius:10px;color:white;padding:8px 20px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;transition:all .2s;}
+.rescue-btn{background:linear-gradient(135deg,#8b2252,var(--accent));border:none;border-radius:10px;color:white;padding:8px 20px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;transition:all .2s;}
 .rescue-btn:hover{transform:scale(1.02);}
 
 /* BREAK CARD */
@@ -180,32 +180,32 @@ h1 em{font-style:italic;color:var(--accent2);}
 .break-timer-display{font-family:'Fraunces',serif;font-size:34px;color:#c084fc;margin-bottom:12px;}
 .break-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
 .break-btn{padding:8px 18px;border-radius:18px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;transition:all .2s;}
-.break-btn.resume{background:linear-gradient(135deg,var(--purple),#6366f1);border:none;color:white;}
+.break-btn.resume{background:linear-gradient(135deg,#8b2252,var(--purple));border:none;color:white;}
 .break-btn.done{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);}
 .break-btn:hover{transform:translateY(-1px);}
 
 /* REFLECTION CARD */
 .reflection-card{display:none;margin:0 18px;background:rgba(107,203,119,.07);border:1px solid rgba(107,203,119,.18);border-radius:14px;padding:16px 18px;}
 .reflection-card.on{display:block;animation:popIn .4s ease both;}
-.reflection-title{font-size:12px;color:var(--accent3);margin-bottom:8px;}
+.reflection-title{font-size:12px;color:var(--accent);margin-bottom:8px;}
 .reflection-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:9px 12px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;resize:none;outline:none;line-height:1.5;min-height:70px;}
-.reflection-input:focus{border-color:rgba(107,203,119,.4);}
+.reflection-input:focus{border-color:rgba(201,116,138,.4);}
 .reflection-input::placeholder{color:var(--muted);}
 .reflection-row{display:flex;gap:8px;margin-top:8px;align-items:center;}
 .mood-after{display:flex;gap:6px;}
 .mood-btn{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:16px;cursor:pointer;transition:all .15s;}
 .mood-btn:hover,.mood-btn.sel{transform:scale(1.15);border-color:rgba(255,255,255,.3);}
-.reflection-save{background:linear-gradient(135deg,var(--accent3),#38a169);border:none;border-radius:10px;color:#0a2010;padding:8px 16px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;margin-left:auto;flex-shrink:0;}
+.reflection-save{background:linear-gradient(135deg,#8b2252,#c9748a);border:none;border-radius:10px;color:#fdf0f3;padding:8px 16px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;margin-left:auto;flex-shrink:0;}
 
 /* INTENTION CARD */
 .intention-card{display:none;margin:0 18px;background:rgba(107,203,119,.07);border:1px solid rgba(107,203,119,.18);border-radius:14px;padding:16px 18px;}
 .intention-card.on{display:block;animation:popIn .4s ease both;}
-.intention-title{font-size:12px;color:var(--accent3);margin-bottom:8px;}
+.intention-title{font-size:12px;color:var(--accent);margin-bottom:8px;}
 .intention-inputs{display:flex;flex-direction:column;gap:7px;margin-bottom:10px;}
 .intention-inputs input{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:9px 12px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;outline:none;}
-.intention-inputs input:focus{border-color:rgba(107,203,119,.4);}
+.intention-inputs input:focus{border-color:rgba(201,116,138,.4);}
 .intention-inputs input::placeholder{color:var(--muted);}
-.intention-confirm{background:linear-gradient(135deg,var(--accent3),#38a169);border:none;border-radius:10px;color:#0a2010;padding:9px 20px;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;width:100%;}
+.intention-confirm{background:linear-gradient(135deg,#8b2252,#c9748a);border:none;border-radius:10px;color:#fdf0f3;padding:9px 20px;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;width:100%;}
 
 /* BREATH */
 .breath-card{display:none;margin:0 18px;background:rgba(168,85,247,.07);border:1px solid rgba(168,85,247,.18);border-radius:14px;padding:18px;text-align:center;}
@@ -221,41 +221,40 @@ h1 em{font-style:italic;color:var(--accent2);}
 .mood-bar{display:none;align-items:center;gap:9px;margin-bottom:8px;font-size:11px;color:var(--muted);}
 .mood-bar.on{display:flex;}
 .mood-track{flex:1;height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;}
-.mood-fill{height:100%;width:5%;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));border-radius:2px;transition:width .8s ease;}
+.mood-fill{height:100%;width:5%;background:linear-gradient(90deg,#8b2252,var(--accent2),var(--accent));border-radius:2px;transition:width .8s ease;}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
 .chip{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);color:var(--text);padding:5px 12px;border-radius:18px;font-size:11px;font-family:'DM Mono',monospace;cursor:pointer;transition:all .2s;white-space:nowrap;}
-.chip:hover{background:rgba(107,203,119,.12);border-color:var(--accent3);color:var(--accent3);transform:translateY(-1px);}
+.chip:hover{background:rgba(201,116,138,.15);border-color:var(--accent);color:var(--accent);transform:translateY(-1px);}
 .input-row{display:flex;gap:9px;align-items:flex-end;}
 textarea{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:10px 13px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;resize:none;outline:none;min-height:40px;max-height:100px;line-height:1.5;transition:border-color .2s;}
-textarea:focus{border-color:rgba(107,203,119,.4);}
+textarea:focus{border-color:rgba(201,116,138,.4);}
 textarea::placeholder{color:var(--muted);}
 textarea:disabled{opacity:.35;cursor:not-allowed;}
-.send-btn{width:40px;height:40px;background:linear-gradient(135deg,var(--accent3),#38a169);border:none;border-radius:11px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;transition:all .2s;flex-shrink:0;}
-.send-btn:hover{transform:scale(1.07);box-shadow:0 4px 18px rgba(107,203,119,.4);}
+.send-btn{width:40px;height:40px;background:linear-gradient(135deg,#8b2252,#c9748a);border:none;border-radius:11px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;transition:all .2s;flex-shrink:0;}
+.send-btn:hover{transform:scale(1.07);box-shadow:0 4px 18px rgba(139,34,82,.5);}
 .send-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none;}
 
 /* WIN */
-.win-banner{display:none;margin-top:12px;background:linear-gradient(135deg,rgba(107,203,119,.15),rgba(77,150,255,.1));border:1px solid rgba(107,203,119,.28);border-radius:14px;padding:20px;text-align:center;}
+.win-banner{display:none;margin-top:12px;background:linear-gradient(135deg,rgba(139,34,82,.2),rgba(201,149,106,.12));border:1px solid rgba(201,116,138,.3);border-radius:14px;padding:20px;text-align:center;}
 .win-banner.on{display:block;animation:popIn .4s cubic-bezier(.34,1.56,.64,1) both;}
 .win-emoji{font-size:36px;margin-bottom:7px;}
-.win-text{font-family:'Fraunces',serif;font-size:20px;color:var(--accent3);}
+.win-text{font-family:'Fraunces',serif;font-size:20px;color:var(--rose);}
 .win-sub{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.7;}
 .closing-ritual{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:var(--accent2);margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
 .restart-btn{display:none;margin:10px auto 0;background:transparent;border:1px solid var(--border);color:var(--muted);padding:7px 18px;border-radius:18px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;transition:all .2s;}
-.restart-btn:hover{border-color:var(--accent3);color:var(--accent3);}
+.restart-btn:hover{border-color:var(--accent);color:var(--accent);}
 .restart-btn.on{display:block;}
 
 /* ===== STATS ===== */
-.stats-panel{display:none;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.4);}
-.stats-panel.on{display:block;animation:fadeUp .4s ease both;}
+.stats-panel{display:none;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.4);animation:fadeUp .4s ease both;}
 .stats-title{font-family:'Fraunces',serif;font-size:20px;margin-bottom:18px;}
-.stats-title span{color:var(--accent3);font-style:italic;}
+.stats-title span{color:var(--rose);font-style:italic;}
 .section-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:9px;}
 
 /* BADGES */
 .badges-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px;}
 .badge{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:18px;font-size:11px;border:1px solid;transition:all .2s;cursor:default;}
-.badge.earned{background:rgba(107,203,119,.12);border-color:rgba(107,203,119,.28);color:var(--accent3);}
+.badge.earned{background:rgba(201,116,138,.14);border-color:rgba(201,116,138,.3);color:var(--rose);}
 .badge.locked{background:rgba(255,255,255,.02);border-color:rgba(255,255,255,.07);color:rgba(255,255,255,.18);filter:grayscale(1);}
 
 /* STAT GRID */
@@ -267,7 +266,7 @@ textarea:disabled{opacity:.35;cursor:not-allowed;}
 /* LEADERBOARD */
 .leaderboard{margin-bottom:18px;}
 .lb-row{display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--border);border-radius:11px;padding:11px 13px;margin-bottom:7px;transition:all .2s;}
-.lb-row:hover{border-color:rgba(107,203,119,.2);}
+.lb-row:hover{border-color:rgba(201,116,138,.22);}
 .lb-rank{font-family:'Fraunces',serif;font-size:18px;width:26px;flex-shrink:0;text-align:center;}
 .lb-rank.gold{color:var(--accent2);}
 .lb-rank.silver{color:#bbb;}
@@ -275,12 +274,12 @@ textarea:disabled{opacity:.35;cursor:not-allowed;}
 .lb-info{flex:1;}
 .lb-task{font-size:13px;color:var(--text);margin-bottom:2px;}
 .lb-meta{font-size:10px;color:var(--muted);}
-.lb-time{font-family:'Fraunces',serif;font-size:17px;color:var(--accent3);flex-shrink:0;}
+.lb-time{font-family:'Fraunces',serif;font-size:17px;color:var(--accent);flex-shrink:0;}
 
 /* MOOD TREND */
 .mood-trend{display:flex;gap:6px;align-items:flex-end;margin-bottom:18px;height:50px;}
 .mood-bar-col{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;}
-.mood-bar-fill{width:100%;border-radius:4px;background:rgba(107,203,119,.4);transition:height .8s ease;min-height:4px;}
+.mood-bar-fill{width:100%;border-radius:4px;background:rgba(201,116,138,.4);transition:height .8s ease;min-height:4px;}
 .mood-bar-label{font-size:9px;color:var(--muted);}
 
 /* FLOW BARS */
@@ -289,15 +288,15 @@ textarea:disabled{opacity:.35;cursor:not-allowed;}
 .flow-date{font-size:10px;color:var(--muted);width:80px;flex-shrink:0;}
 .flow-track{flex:1;height:18px;background:rgba(255,255,255,.04);border-radius:5px;overflow:hidden;}
 .flow-fill{height:100%;border-radius:5px;display:flex;align-items:center;padding-left:7px;font-size:10px;min-width:35px;transition:width 1.2s ease;}
-.flow-fill.long{background:linear-gradient(90deg,rgba(107,203,119,.6),rgba(77,150,255,.45));color:white;}
-.flow-fill.short{background:linear-gradient(90deg,rgba(255,217,61,.35),rgba(255,107,107,.25));color:rgba(255,255,255,.6);}
+.flow-fill.long{background:linear-gradient(90deg,rgba(139,34,82,.7),rgba(201,116,138,.6));color:white;}
+.flow-fill.short{background:linear-gradient(90deg,rgba(255,217,61,.25),rgba(201,116,138,.25));color:rgba(255,255,255,.5);}
 .flow-icon{font-size:13px;width:20px;text-align:center;}
 
 /* HOUR CHART */
 .hour-chart{display:flex;gap:4px;align-items:flex-end;height:44px;margin-bottom:6px;}
 .hour-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;}
-.hour-bar{width:100%;border-radius:3px;background:rgba(77,150,255,.35);transition:height .8s ease;min-height:3px;}
-.hour-bar.best{background:var(--accent4);}
+.hour-bar{width:100%;border-radius:3px;background:rgba(201,116,138,.3);transition:height .8s ease;min-height:3px;}
+.hour-bar.best{background:var(--accent);}
 .hour-label{font-size:9px;color:var(--muted);}
 
 /* OUTCOME BARS */
@@ -305,9 +304,9 @@ textarea:disabled{opacity:.35;cursor:not-allowed;}
 .amb-label{font-size:11px;color:var(--muted);width:90px;flex-shrink:0;}
 .amb-track{flex:1;height:7px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;}
 .amb-fill{height:100%;border-radius:3px;transition:width 1s ease;}
-.fill-green{background:linear-gradient(90deg,var(--accent4),var(--accent3));}
-.fill-yellow{background:linear-gradient(90deg,var(--accent2),#ff8e53);}
-.fill-red{background:linear-gradient(90deg,var(--accent),#ff8e53);}
+.fill-green{background:linear-gradient(90deg,#8b2252,var(--accent));}
+.fill-yellow{background:linear-gradient(90deg,var(--accent2),#c9956a);}
+.fill-red{background:linear-gradient(90deg,#6b2035,#c9748a);}
 .amb-count{font-size:11px;color:var(--muted);width:22px;text-align:right;}
 
 .insight-box{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:13px 15px;margin:14px 0;font-size:12px;color:var(--muted);line-height:1.8;}
@@ -320,7 +319,7 @@ textarea:disabled{opacity:.35;cursor:not-allowed;}
 .log-reflection{font-size:11px;color:var(--accent3);margin-bottom:4px;font-style:italic;}
 .log-tags{display:flex;gap:5px;flex-wrap:wrap;}
 .tag{padding:2px 7px;border-radius:9px;font-size:10px;}
-.tag-green{background:rgba(107,203,119,.14);color:var(--accent3);}
+.tag-green{background:rgba(201,116,138,.14);color:var(--rose);}
 .tag-yellow{background:rgba(255,217,61,.11);color:var(--accent2);}
 .tag-red{background:rgba(255,107,107,.09);color:var(--accent);}
 .tag-gray{background:rgba(255,255,255,.05);color:var(--muted);}
@@ -349,6 +348,7 @@ textarea:disabled{opacity:.35;cursor:not-allowed;}
   <div class="nav">
     <button class="nav-btn active" id="nav-session" onclick="switchTab('session')">session</button>
     <button class="nav-btn" id="nav-stats" onclick="switchTab('stats')">stats</button>
+    <button class="nav-btn" id="nav-backup" onclick="switchTab('backup')">backup</button>
   </div>
 
   <div id="session-tab">
@@ -376,12 +376,16 @@ textarea:disabled{opacity:.35;cursor:not-allowed;}
             <circle cx="36.6" cy="63.8" r=".6" fill="white"/><circle cx="44.6" cy="63.8" r=".6" fill="white"/>
             <ellipse cx="32" cy="67" rx="3" ry="1.8" fill="#ffaec9" opacity=".55"/>
             <ellipse cx="48" cy="67" rx="3" ry="1.8" fill="#ffaec9" opacity=".55"/>
-            <path d="M34.5 69 Q40 72 45.5 69" stroke="#c17f5a" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+            <path d="M34.5 69 Q40 72 45.5 69" stroke="#b06040" stroke-width="1.2" fill="none" stroke-linecap="round"/>
           </svg>
         </div>
         <div style="flex:1">
-          <div class="chat-header-name">Mochi — your initiation buddy 🌱</div>
-          <div class="chat-header-status"><span class="status-dot"></span> here with you</div>
+          <div class="chat-header-name">Mochi — your initiation buddy 🌹</div>
+          <div class="chat-header-status"><span class="status-dot"></span> <span id="chat-header-status-text">gentle mode 🌱</span></div>
+        </div>
+        <div style="display:flex;gap:5px;flex-shrink:0;">
+          <button id="tone-gentle" onclick="setTone('gentle')" title="Gentle & compassionate" style="background:rgba(201,116,138,.2);border:1px solid rgba(201,116,138,.4);color:var(--rose);padding:4px 10px;border-radius:12px;font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;transition:all .2s;">🌱 gentle</button>
+          <button id="tone-ns" onclick="setTone('ns')" title="No-nonsense & direct" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:4px 10px;border-radius:12px;font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;transition:all .2s;">💪 direct</button>
         </div>
       </div>
 
@@ -413,7 +417,7 @@ textarea:disabled{opacity:.35;cursor:not-allowed;}
             <circle cx="36" cy="64.5" r="1.4" fill="#2d1f3d"/><circle cx="44" cy="64.5" r="1.4" fill="#2d1f3d"/>
             <ellipse cx="32" cy="67" rx="3" ry="1.8" fill="#ffaec9" opacity=".55"/>
             <ellipse cx="48" cy="67" rx="3" ry="1.8" fill="#ffaec9" opacity=".55"/>
-            <path d="M34.5 69 Q40 72 45.5 69" stroke="#c17f5a" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+            <path d="M34.5 69 Q40 72 45.5 69" stroke="#b06040" stroke-width="1.2" fill="none" stroke-linecap="round"/>
           </svg>
         </div>
         <div class="crisis-title">I'm just sitting here with you.</div>
@@ -594,6 +598,29 @@ textarea:disabled{opacity:.35;cursor:not-allowed;}
   </div>
 
   <div class="stats-panel" id="stats-tab"></div>
+  <div id="backup-tab" style="display:none;animation:fadeUp .4s ease both;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;box-shadow:0 30px 80px rgba(0,0,0,.4);">
+      <div style="font-family:'Fraunces',serif;font-size:20px;margin-bottom:6px;">Backup & <span style="color:var(--rose);font-style:italic">Restore</span></div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:20px;line-height:1.8;">Export your sessions and streak data as a JSON file. Import it on any device to pick up where you left off.</div>
+      <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">export</div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px;">
+        <div style="font-size:13px;color:var(--text);margin-bottom:4px;">📤 Download your data</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.7;">Saves all sessions, streaks, and stats as a .json file you can keep as a backup.</div>
+        <button onclick="exportData()" style="background:linear-gradient(135deg,#8b2252,var(--accent));border:none;border-radius:10px;color:var(--text);padding:10px 22px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;transition:all .2s;width:100%;">Download mochi-backup.json ↓</button>
+      </div>
+      <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">import</div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;">
+        <div style="font-size:13px;color:var(--text);margin-bottom:4px;">📥 Restore from backup</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.7;">Upload a previously exported mochi-backup.json file. This will merge with your existing data.</div>
+        <label style="display:block;background:rgba(201,116,138,.12);border:1px dashed rgba(201,116,138,.3);border-radius:10px;padding:14px;text-align:center;cursor:pointer;font-size:12px;color:var(--accent);transition:all .2s;" id="import-label">
+          tap to choose file →
+          <input type="file" accept=".json" id="import-file" onchange="importData(this)" style="display:none">
+        </label>
+        <div id="import-status" style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center;min-height:16px;"></div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -687,6 +714,51 @@ const FEELINGS={
   crisis:["Hey.\n\nI'm really glad you're here. You don't have to do anything right now. We're just going to be here together for a minute."],
 };
 
+// ── NO-NONSENSE TONE VARIANTS ─────────────────────────────────
+const FEELINGS_NS={
+  anxious:["Anxious is fine. You can do things while anxious. What's the task?","Anxiety is just energy with no direction yet. Let's give it one. What are you avoiding?","You're here. That's already more than anxiety wanted. What's the task?"],
+  avoidant:["Avoidance is comfortable and it's also keeping you stuck. What's the thing?","You know what you're avoiding. Say it out loud. What is it?","The fog will lift once you start. What's the task?"],
+  exhausted:["Tired is fine. You can work tired. What's the one thing you're doing today?","Low energy isn't a reason to stop — it's a reason to do something small. What is it?","You don't have to feel great to do something. What's on the list?"],
+  ashamed:["Shame doesn't get you off the hook. It also doesn't define you. What's the task?","The longer you avoid it, the worse the shame gets. Only way out is through. What is it?","You're here. The shame didn't stop you from showing up. What's the thing?"],
+  okay:["Good. Use it. What are we doing?","Okay is plenty. What's the task?","Let's not waste it. What are we working on?"],
+  numb:["Numb or not, things still need doing. What's been sitting there?","You don't need to feel anything to start. What's the task?","Numb is fine. Bodies move even when feelings don't. What is it?"],
+  stressed:["Stressed means you care. Channel it. What's the one thing that would actually help?","Pick one thing. Just one. What is it?","The pile doesn't shrink by staring at it. What's first?"],
+  sad:["You can feel sad and still do something. What's one small thing?","Being here matters. What's the task, even a tiny one?","Sad is okay. We're just doing one small thing. What is it?"],
+  crisis:["Hey. I see you. You don't have to do anything right now. Let's just be here for a second."],
+};
+
+const SHRINK_AFFIRMS_NS=[
+  s=>`"${s}". That's the one. Let's go.`,
+  s=>`Good. "${s}". Nothing else. Just that.`,
+  s=>`"${s}". That's your whole job right now. Don't overthink it.`,
+  s=>`Got it. "${s}". One thing. That's it.`,
+];
+
+const POST_STANDUP_NS=["Good. You moved. Now go.\n\n3... 2... 1...\n\nStart.","Body's awake. Now use it.\n\n3... 2... 1...\n\nGo.","That's it. Now move.\n\n3... 2... 1...\n\nGo."];
+const POST_SITUPS_NS=["Five. Good. Your brain is awake now whether it wants to be or not.\n\n3... 2... 1...\n\nGo.","Done. No more excuses.\n\n3... 2... 1...\n\nStart."];
+
+const FOCUS_RESCUES_NS=["You drifted. Come back. What's the next action?","Stop. One breath. Now what's the next thing?","That's fine. Refocus. What are you doing?","Back. Just the next step. Go."];
+
+const KEEP_GOING_NS=["Keep moving. What's next?","You're in it. Don't stop now. What's the next step?","Good. Next thing. Go.","Don't lose the momentum. What's next?"];
+
+const BUNDLE_PROMPTS_NS=["Is there anything that would make this easier — music, coffee, a better spot? If yes, sort that now. If not, let's just go.","Quick — anything you can pair with this to make it less awful? Good. Now pick your first step.","Pairing something enjoyable with this task actually helps. Music, drink, whatever. Sorted? Good."];
+
+const UNPACK_NS={
+  overwhelming:["Too big feels bad. So we're making it small. What's the smallest possible piece of this?","It's big. We're not doing all of it. What's one tiny part?","Break it down. What's the single next action?"],
+  nostart:["Doesn't matter where you start. Pick anything. Wrong starts still count.","Just pick something. Any entry point works. What could be first?","Analysis paralysis is a trap. Pick a starting point. What is it?"],
+  failing:["Fear of failure means you give a damn. Good. Now what's a step that's too small to fail?","You're going to do this imperfectly. That's allowed. What's one small move?","Failing at a tiny thing still gets you further than not starting. What's the step?"],
+  shame:["Shame means you care. That's not the enemy. Avoidance is. What's one small thing?","The shame gets quieter once you start. What's one move?","We're not fixing the shame today. We're just doing one thing. What is it?"],
+  perfectionism:["Perfect isn't the goal. Started is. What's the worst version of the first step?","Good enough beats perfect every time. What's a passable first action?","Stop trying to do it right. Just do it. What's the first thing?"],
+  other:["Okay. What's the tiniest first action?","Got it. One thing. What is it?","Fine. What can you do in the next 2 minutes?"],
+};
+
+const CLOSING_RITUALS_NS=[
+  (task,mins)=>`${mins} minutes on "${task}". That happened. Can't unhappen.`,
+  (task,mins)=>`You worked for ${mins} minutes when you didn't want to. That's the whole thing.`,
+  (task,_)=>`The avoidance lost today. Remember that.`,
+  (task,mins)=>`${mins} minutes. You showed up. That's what matters.`,
+];
+
 const NORMALIZERS=[
   n=>`"${n}" — okay. That's been sitting on your shoulders for a while, hasn't it.\n\nWhat makes it feel hard to start?`,
   n=>`Got it. "${n}".\n\nJust naming it takes something. What's the stickiest part — starting, doing, or finishing?`,
@@ -728,14 +800,61 @@ const CLOSING_RITUALS=[
   (task,mins)=>`You showed up. You stayed. ${mins} minutes of real work. That's who you are today.`,
 ];
 
-const BODY_DOUBLE_MSGS=["Focus. I'm right here.\nYou're doing it.","Still with you. Keep going.\nYou've got this. 🌱","Don't stop now. You're in it.\nOne thing at a time.","Still here. Still proud.\nKeep the momentum.","You started. That was the hard part.\nNow just keep going.","Breathe. And continue.\nYou're doing so well."];
+const BODY_DOUBLE_MSGS=["Focus. I'm right here.\nYou're doing it.","Still with you. Keep going.\nYou've got this. 🌱","Don't stop now. You're in it.\nOne thing at a time.","Still here. Still proud.\nKeep the momentum.","You started. That was the hard part.\nNow just keep going.","Breathe. And continue.\nYou're doing so well.","It will work because you are insane.\nKeep going.","Action precedes motivation.\nYou're already acting.","Don't look at the big picture.\nJust this moment. Just this step.","You are someone who keeps showing up.\nLook — you're still here.","Growth and discomfort over comfort.\nYou chose this. Good.","Do it scared.\nFear is just a feeling. Not a fact."];
 
 const KEEP_GOING=["Momentum is real and yours is building. What's the next small thing?","You're in it now. Ride the wave.\n\nWhat's next? Keep it small.","This is what unstuck feels like. What's the next move?","The resistance is quieter now, isn't it. Keep going while that's true."];
+
+// ─── YOUR AFFIRMATIONS ───────────────────────────────────────────
+// These will be woven into the appropriate stages once you share them.
+// Format: {text: "the affirmation", stage: "checkin|unpack|shrink|sprint|win"}
+const USER_AFFIRMATIONS=[
+  // ── CHECK-IN (when someone arrives feeling bad about themselves) ──
+  {text:"Shame is just a nervous system reflex. It's not the truth about you.", stage:"checkin"},
+  {text:"You are someone who keeps showing up. That's what you're doing right now.", stage:"checkin"},
+  {text:"Do it scared. Fear is just a feeling — not a fact.", stage:"checkin"},
+  {text:"The outcome of this task is not attached to your identity. You are not this task.", stage:"checkin"},
+
+  // ── UNPACKING (when exploring what's blocking them) ──
+  {text:"Shame is just a nervous system reflex. It's not evidence of anything real.", stage:"unpack"},
+  {text:"Action precedes motivation. You don't have to feel ready — you just have to start.", stage:"unpack"},
+  {text:"Work trains skill. It doesn't define you. Nothing you do here is a verdict on your worth.", stage:"unpack"},
+  {text:"Do it scared. Fear is just a feeling, not a fact — and feelings pass.", stage:"unpack"},
+  {text:"The outcome of this task is not attached to your identity.", stage:"unpack"},
+  {text:"Growth and discomfort go together. Discomfort means you're in the right place.", stage:"unpack"},
+
+  // ── SHRINKING (when picking the tiny first step) ──
+  {text:"Progress over perfection. One step at a time.", stage:"shrink"},
+  {text:"Start anywhere. Small efforts amount into big ones.", stage:"shrink"},
+  {text:"Don't look at the big picture — just focus on what you can do right now, in this moment and this hour.", stage:"shrink"},
+  {text:"Minute progress over perfection. Always.", stage:"shrink"},
+  {text:"One step at a time. Just this one.", stage:"shrink"},
+
+  // ── SPRINT (shown at sprint start alongside the timer) ──
+  {text:"It will work because you are insane. 🌱", stage:"sprint"},
+  {text:"You will succeed because you are insane. Keep going.", stage:"sprint"},
+  {text:"Action precedes motivation. You're already acting. The motivation will follow.", stage:"sprint"},
+  {text:"Don't look at the big picture — just this moment, this hour, this step.", stage:"sprint"},
+  {text:"Growth and discomfort over comfort. You chose the harder thing. Good.", stage:"sprint"},
+  {text:"You are someone who keeps showing up. Look — you're doing it again.", stage:"sprint"},
+
+  // ── WIN (shown at celebration) ──
+  {text:"Progress over perfection. And today? You progressed.", stage:"win"},
+  {text:"You are someone who keeps showing up. This is proof.", stage:"win"},
+  {text:"Work trains skill — it doesn't define you. But today you trained.", stage:"win"},
+  {text:"Small efforts amount into big ones. Today was one of those small efforts.", stage:"win"},
+  {text:"You did it scared. That's the whole thing. That's everything.", stage:"win"},
+];
+// Helper: get a random affirmation for a given stage (or null if none set)
+function getAffirmation(stage){
+  const matches=USER_AFFIRMATIONS.filter(a=>a.stage===stage||a.stage==='any');
+  return matches.length?pick(matches).text:null;
+}
 
 const STUCK=["That's okay. You tried and that took something real.\n\nCan we make it even smaller? A 30-second version?","No shame in stopping. Your brain worked hard just getting here.\n\nWant to try a tinier version, or is rest the right call today?","Sometimes the block wins today. That's allowed.\n\nYou still showed up. One more tiny attempt, or call it?","Stuck is information, not failure. What's the specific moment where it got hard?"];
 
 // ─── STATE ───────────────────────────────────────────────────────
 let phase=0,momentum=5,taskName='',chosenStep='',userValue='',anchorWord='',selectedMoodAfter='';
+let tone='gentle'; // 'gentle' or 'ns' (no-nonsense)
 let normIdx=0,shrinkIdx=0,celIdx=0;
 let sessionStart=null,standUpDone=false,situpsDone=false,sprintMinutesTotal=0;
 let logs=[],streak=0,longestStreak=0;
@@ -744,18 +863,18 @@ let midSprintPinged=false,nearEndPinged=false,breakInterval=null,breakSecondsLef
 let focusRescueCount=0,isCrisisMode=false;
 
 (async()=>{
+  try{const r=await window.storage.get('mochi-logs2');logs=r?JSON.parse(r.value):[];}catch(e){logs=[];}
   try{
-    const r=await window.storage.get('mochi-logs2');logs=r?JSON.parse(r.value):[];
     const s=await window.storage.get('mochi-streak2');
     const sd=s?JSON.parse(s.value):{count:0,longest:0,lastDate:null};
     const today=new Date().toDateString(),yesterday=new Date(Date.now()-86400000).toDateString();
     streak=(sd.lastDate===today||sd.lastDate===yesterday)?sd.count:0;
     longestStreak=sd.longest||0;
-    updateStreakBadge();
-  }catch(e){logs=[];streak=0;}
+  }catch(e){streak=0;longestStreak=0;}
+  updateStreakBadge();
 })();
 
-async function saveLogs(){try{await window.storage.set('mochi-logs2',JSON.stringify(logs));}catch(e){}}
+async function saveLogs(){try{await window.storage.set('mochi-logs2',JSON.stringify(logs.slice(0,200)));}catch(e){}}
 async function saveStreak(){
   streak++;longestStreak=Math.max(longestStreak,streak);
   const today=new Date().toDateString();
@@ -770,6 +889,27 @@ function updateStreakBadge(){
 }
 
 function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+function setTone(t){
+  tone=t;
+  const gentle=document.getElementById('tone-gentle');
+  const ns=document.getElementById('tone-ns');
+  if(t==='gentle'){
+    gentle.style.background='rgba(201,116,138,.2)';gentle.style.borderColor='rgba(201,116,138,.4)';gentle.style.color='var(--rose)';
+    ns.style.background='transparent';ns.style.borderColor='var(--border)';ns.style.color='var(--muted)';
+    document.getElementById('chat-header-status-text').textContent='gentle mode 🌱';
+  } else {
+    ns.style.background='rgba(201,116,138,.2)';ns.style.borderColor='rgba(201,116,138,.4)';ns.style.color='var(--rose)';
+    gentle.style.background='transparent';gentle.style.borderColor='var(--border)';gentle.style.color='var(--muted)';
+    document.getElementById('chat-header-status-text').textContent='direct mode 💪';
+  }
+}
+// T(gentle, noNonsense) — returns the right variant for current tone
+// Also works as T(gentleArr, nsArr) for random picks within tone
+function T(g,ns){
+  const chosen=tone==='ns'?ns:g;
+  return Array.isArray(chosen)?pick(chosen):chosen;
+}
 
 // ─── UI ──────────────────────────────────────────────────────────
 function addMsg(role,text){
@@ -848,7 +988,10 @@ async function handleCheckin(text){
     setTimeout(()=>{show('crisis-entry');document.getElementById('messages').scrollTop=9999;},600);
     lockInput();return;
   }
-  await mochiSay(pick(FEELINGS[key])+streakLine(),1100);
+  const aff=getAffirmation('checkin');
+  const affLine=aff?`\n\n${aff}`:'';
+  const feelingBank=tone==='ns'?(FEELINGS_NS[key]||FEELINGS_NS.okay):FEELINGS[key];
+  await mochiSay(pick(feelingBank)+streakLine()+affLine,1100);
   phase=1;setDots(1);
   setChips([
     {label:"something work-related"},{label:"a personal project"},
@@ -909,32 +1052,62 @@ async function handleUnpacking(text){
   else if(t.includes('fail')||t.includes('wrong')||t.includes('bad')||t.includes('succeed')) key='failing';
   else if(t.includes('shame')||t.includes('guilty')||t.includes('embarrass')||t.includes('long')) key='shame';
   else if(t.includes('perfect')||t.includes('boring')||t.includes('right way')||t.includes('good enough')) key='perfectionism';
-  await mochiSay(pick(UNPACK[key]),1200);
-  setTimeout(async()=>{
-    await mochiSay(pick(BUNDLE_PROMPTS),1200);
+  await mochiSay(T(pick(UNPACK[key]),pick(UNPACK_NS[key]||UNPACK_NS.other)),1200);
+  setTimeout(()=>{
     phase=3;setDots(3);
     setChips([
-      {label:"open the file / document / app"},{label:"write one sentence"},
-      {label:"send one message"},{label:"set a 5-minute timer"},
-      {label:"just look at it for 2 min"},{label:"read the first paragraph"},
-      {label:"gather what I need"},{label:"let me type my own step"},
+      {label:"open the file / app / tab"},
+      {label:"write one sentence"},
+      {label:"read only the first line"},
+      {label:"just look at it for 90 sec"},
+      {label:"say the task out loud once"},
+      {label:"set a 2-minute timer"},
+      {label:"write the title / heading only"},
+      {label:"send one message or reply"},
+      {label:"make one phone call"},
+      {label:"open a blank page / doc"},
+      {label:"gather what I need first"},
+      {label:"move to the right room / spot"},
+      {label:"put on focus music"},
+      {label:"close all other tabs"},
+      {label:"write a bad first draft of one thing"},
+      {label:"sketch or bullet point — no sentences"},
+      {label:"copy paste one thing"},
+      {label:"set up my space"},
+      {label:"let me type my own step"},
     ]);
-  },2600);
+  },800);
 }
 
 async function handleShrinking(text){
   chosenStep=text;
-  await mochiSay(SHRINK_AFFIRMS[shrinkIdx%SHRINK_AFFIRMS.length](chosenStep),1100);shrinkIdx++;
-  // Values anchor
-  setTimeout(()=>{lockInput();show('value-card');document.getElementById('messages').scrollTop=9999;},700);
+  // 1. Affirm the step choice
+  const shrinkBank=tone==='ns'?SHRINK_AFFIRMS_NS:SHRINK_AFFIRMS;
+  await mochiSay(shrinkBank[shrinkIdx%shrinkBank.length](chosenStep),1100);shrinkIdx++;
+  // 2. Shrink affirmation
+  const shrinkAff=getAffirmation('shrink');
+  if(shrinkAff) await mochiSay(shrinkAff, 750);
+  // 3. Temptation bundling prompt
+  await mochiSay(T(pick(BUNDLE_PROMPTS),pick(BUNDLE_PROMPTS_NS)),1100);
+  // 4. Implementation intention card
+  setTimeout(()=>{lockInput();show('intention-card');document.getElementById('messages').scrollTop=9999;},700);
   phase=4;setDots(4);
 }
 
 async function confirmValue(){
   userValue=document.getElementById('value-input').value||'';
   hide('value-card');
-  if(userValue) await mochiSay(`"${userValue}"\n\nHold that. That's why we're here.\n\nNow — pick one word for this session.`,1000);
-  else await mochiSay("Okay. Let's set an intention for this session.",900);
+  if(userValue){
+    const whyMsg=T(
+      [`"${userValue}"\n\nGood. Hold that. That's the reason we're doing this.\n\nNow pick one word to carry with you into the sprint.`,
+       `"${userValue}"\n\nThat's your anchor. When it gets hard, come back to that.\n\nPick one word for this session.`],
+      [`"${userValue}"\n\nOkay. That's your reason. Don't lose it.\n\nPick a word. One word for this sprint.`,
+       `Got it. "${userValue}". Write it somewhere if you have to.\n\nOne word. What's it going to be?`]
+    );
+    await mochiSay(pick(whyMsg),1000);
+  } else {
+    await mochiSay(T("Okay. Let's set an intention word for this session.","Alright. Pick a word. One word to keep you on track."),900);
+  }
   show('word-card');
 }
 
@@ -946,8 +1119,11 @@ function selectWord(el,word){
 }
 async function confirmWord(){
   hide('word-card');
-  await mochiSay(`${anchorWord.toUpperCase()}.\n\nHold that word during the sprint. When you drift — and you might — come back to it.`,1000);
-  setTimeout(()=>{show('intention-card');document.getElementById('messages').scrollTop=9999;},800);
+  await mochiSay(T(
+    `${anchorWord.toUpperCase()}.\n\nHold that word during the sprint. When you drift — come back to it.`,
+    `${anchorWord.toUpperCase()}. Got it. Don't forget it.`
+  ),900);
+  setTimeout(()=>{show('standup-card');document.getElementById('messages').scrollTop=9999;},700);
 }
 
 async function confirmIntention(){
@@ -957,7 +1133,8 @@ async function confirmIntention(){
   hide('intention-card');
   const rewardLine=reward?`\n\nAnd your reward after: ${reward}. Pre-earned.`:'';
   await mochiSay(`Say this out loud:\n\n"I will ${chosenStep} ${when}, at ${where}."\n\nThat's your implementation intention.${rewardLine}`,1200);
-  setTimeout(()=>{show('standup-card');document.getElementById('messages').scrollTop=9999;},900);
+  // Now ask why it matters
+  setTimeout(()=>{show('value-card');document.getElementById('messages').scrollTop=9999;},700);
 }
 
 // STANDUP & SITUPS
@@ -971,7 +1148,7 @@ function countSitup(){
 async function confirmStandUp(type){
   hide('standup-card');standUpDone=true;setMomentum(20);phase=5;setDots(5);
   const msgs={stood:"Standing already changes your physiology.\n\n",walked:"Walking activates your motor cortex.\n\n",stretched:"Stretching grounds you in your body.\n\n"};
-  await mochiSay((msgs[type]||'')+pick(POST_STANDUP),850);await runCountdown();
+  await mochiSay((msgs[type]||'')+T(pick(POST_STANDUP),pick(POST_STANDUP_NS)),850);await runCountdown();
 }
 
 async function runCountdown(){
@@ -996,13 +1173,23 @@ async function runCountdown(){
 async function handleAfterFirst(text){
   const t=text.toLowerCase();
   if(t.match(/did it|done|finished|complete|okay i did/)){
-    setMomentum(20);
-    const valueRef=userValue?`\n\nRemember why — "${userValue}". Keep going.`:'';
-    await mochiSay(`YES! 🌱 First step done. That was the hardest part.${valueRef}\n\nWant to keep going? I'll run a sprint and sit with you.`,1000);
+    setMomentum(15);
+    const PUSH_G=[
+      ()=>`YOU DID IT. 🌱\n\nThat step is done and cannot be undone. You broke the seal.\n\nMomentum is real and you have it RIGHT NOW. ${userValue?`You said this matters because "${userValue}" — act like it.`:''}\n\nDo a sprint. I'll be with you every second.`,
+      ()=>`YES. First step done.\n\nThe resistance you just overcame? That was the whole game. It doesn't get harder than that.${userValue?`\n\nYou showed up for "${userValue}". Don't stop now.`:''}\n\nRide this. Do a sprint with me.`,
+      ()=>`Look at that. You started.\n\nDopamine releasing, cortisol dropping, momentum building. This is the window — windows close fast.${userValue?`\n\n"${userValue}" — that's why you're here.`:''}\n\nSay yes to 10 minutes. Just 10. I'm right here.`,
+    ];
+    const PUSH_NS=[
+      ()=>`Done. That step is behind you.${userValue?` You said "${userValue}" matters. Act accordingly.`:''} \n\nDon't let the momentum die. Sprint. Go.`,
+      ()=>`First step: done. You've proven you can.\n\nYou can stop here or keep going. Stopping now wastes everything you just built.${userValue?` "${userValue}" is why you're here.`:''} Sprint. Go.`,
+      ()=>`Good. Now don't stop.\n\nThe window is open. Won't stay open.${userValue?` "${userValue}" — remember why.`:''} 10 minutes. No excuses. Go.`,
+    ];
+    const pushBank=tone==='ns'?PUSH_NS:PUSH_G;
+    await mochiSay(pushBank[Math.floor(Math.random()*pushBank.length)](),1100);
     setChips([
-      {label:"yes — 10 min sprint 🔥",value:"yes sprint 10"},
+      {label:"YES — 10 min sprint 🔥🔥",value:"yes sprint 10"},
       {label:"quick 5 min sprint",value:"yes sprint 5"},
-      {label:"15 minute sprint",value:"yes sprint 15"},
+      {label:"20 minute sprint",value:"yes sprint 20"},
       {label:"I'll keep going on my own",value:"on my own"},
       {label:"that's enough for today",value:"enough for today"},
     ]);
@@ -1012,14 +1199,17 @@ async function handleAfterFirst(text){
     await startSprint(mins);
   }
   else if(t.includes('own')||t.includes('myself')) {
-    await mochiSay("Love it. You've got momentum — ride it.\n\nCome back and tell me how it went. 🌱",900);
+    await mochiSay(T("Love it. You've got momentum — ride it.\n\nCome back and tell me how it went. 🌱","Good. Keep going on your own. Come back and tell me what got done."),900);
     setChips([{label:"✅ I finished!",value:"I finished!"},{label:"taking a break",value:"taking a break"},{label:"I got stuck",value:"I got stuck"}]);phase=8;
   }
   else if(t.includes('enough')||t.includes('stop')||t.includes('done for today')){
-    await mochiSay("Calling it after real progress is wisdom.\n\nYou moved the needle today.",900);await celebrateWin(true);
+    await mochiSay(T("Calling it after real progress is wisdom.\n\nYou moved the needle today.","Okay. You did something. That counts. Come back tomorrow."),900);await celebrateWin(true);
   }
   else if(t.match(/tried|stopped|can't|stuck/)){
-    await mochiSay("That's okay. You tried — that counts.\n\nLet's try a different angle.",800);
+    await mochiSay(T(
+      "That's okay. You tried — that counts.\n\nLet's try a different angle.",
+      "You hit resistance. That's normal. We're not stopping — we're adjusting.\n\nTake one breath."
+    ),800);
     setTimeout(()=>{show('breath-card');lockInput();},400);
   }
   else if(t.includes('tinier')||t.includes('smaller')){
@@ -1044,7 +1234,19 @@ async function startSprint(minutes=10){
   midSprintPinged=false;nearEndPinged=false;sprintPaused=false;focusRescueCount=0;
   const valueRef=userValue?`\n\nYou said this matters because: "${userValue}". Hold that.`:'';
   const wordRef=anchorWord?`\n\nYour word: ${anchorWord.toUpperCase()}.`:'';
-  await mochiSay(`${minutes} minutes. Mochi is right here with you.${valueRef}${wordRef}\n\nFocus on "${chosenStep}". Go.`,900);
+  const sprintAff=getAffirmation('sprint');
+  const sprintAffLine=sprintAff?`\n\n${sprintAff}`:'';
+  const SPRINT_KICK_G=[
+    `${minutes} minutes. Mochi is right here.${valueRef}${wordRef}${sprintAffLine}\n\nKeep going. Every minute adds up. Go.`,
+    `${minutes} minutes on the clock.${valueRef}${wordRef}${sprintAffLine}\n\nYou're already past the hardest part. This is just momentum now. Go.`,
+    `${minutes} minutes. That's it.${valueRef}${wordRef}${sprintAffLine}\n\nMinute progress over perfection. Just keep moving. Go.`,
+  ];
+  const SPRINT_KICK_NS=[
+    `${minutes} minutes.${valueRef}${wordRef}${sprintAffLine}\n\nStop thinking. Start. The minutes add up whether you like it or not. Go.`,
+    `${minutes} minutes.${valueRef}${wordRef}${sprintAffLine}\n\nThis is the work. It doesn't have to feel good — it just has to happen. Go.`,
+    `${minutes} minutes. No excuses.${valueRef}${wordRef}${sprintAffLine}\n\nYou've done harder things. Keep moving. Go.`,
+  ];
+  await mochiSay(pick(tone==='ns'?SPRINT_KICK_NS:SPRINT_KICK_G),900);
   show('sprint-panel');
   document.getElementById('sprint-sub').textContent=`${minutes}-min sprint · Mochi is with you`;
   if(anchorWord) document.getElementById('anchor-display').textContent=anchorWord.toUpperCase();
@@ -1077,14 +1279,14 @@ function updateSprintDisplay(){
   document.getElementById('timer-display').textContent=`${m}:${s.toString().padStart(2,'0')}`;
   const pct=sprintSecondsLeft/sprintTotal;
   document.getElementById('timer-ring').style.strokeDashoffset=(283*(1-pct)).toString();
-  document.getElementById('timer-ring').style.stroke=pct>0.5?'var(--accent4)':pct>0.2?'var(--accent2)':'var(--accent)';
+  document.getElementById('timer-ring').style.stroke=pct>0.5?'var(--accent)':pct>0.2?'var(--accent2)':'#8b2252';
 }
 
 function pauseSprint(){sprintPaused=!sprintPaused;document.getElementById('pause-btn').textContent=sprintPaused?'resume':'pause';document.getElementById('timer-label').textContent=sprintPaused?'paused':'remaining';}
 
 function focusRescue(){
   focusRescueCount++;
-  document.getElementById('rescue-msg').innerHTML=pick(FOCUS_RESCUES).replace('\n','<br>');
+  document.getElementById('rescue-msg').innerHTML=T(pick(FOCUS_RESCUES),pick(FOCUS_RESCUES_NS)).replace('\n','<br>');
   show('focus-rescue');
   setTimeout(()=>document.getElementById('messages').scrollTop=9999,100);
 }
@@ -1149,9 +1351,11 @@ async function celebrateWin(partial=false){
   const CELS=[{text:"YOU DID IT.",sub:"I'm genuinely proud of you. That step was harder than it looked."},{text:"There it is.",sub:"You broke through the wall. The first step is always the hardest."},{text:"Look at that.",sub:"You just proved to your own brain that you can start."},{text:"Yes. Yes. Yes.",sub:"This is what winning against the resistance looks like. Remember this feeling."}];
   const cel=CELS[celIdx%CELS.length];celIdx++;
   document.getElementById('win-text').textContent=cel.text;
-  document.getElementById('win-sub').textContent=partial?"You did something today. Every session counts.":cel.sub;
+  const winAff=getAffirmation('win');
+  document.getElementById('win-sub').textContent=partial?"You did something today. Every session counts.":(winAff||cel.sub);
   const totalMins=sprintMinutesTotal||(sessionStart?Math.round((Date.now()-sessionStart)/60000):1);
-  const ritual=CLOSING_RITUALS[celIdx%CLOSING_RITUALS.length](taskName||'something hard',totalMins);
+  const ritualBank=tone==='ns'?CLOSING_RITUALS_NS:CLOSING_RITUALS;
+  const ritual=ritualBank[celIdx%ritualBank.length](taskName||'something hard',totalMins);
   document.getElementById('closing-ritual').textContent=ritual;
   show('win-banner');show('restart-btn');
   const moodAfterScore=selectedMoodAfter==='😄'?3:selectedMoodAfter==='🙂'?2:selectedMoodAfter==='😐'?1:0;
@@ -1184,11 +1388,60 @@ const BADGE_DEFS=[
 ];
 
 function switchTab(tab){
-  document.getElementById('nav-session').classList.toggle('active',tab==='session');
-  document.getElementById('nav-stats').classList.toggle('active',tab==='stats');
+  ['session','stats','backup'].forEach(t=>{
+    document.getElementById('nav-'+t).classList.toggle('active',tab===t);
+  });
   document.getElementById('session-tab').style.display=tab==='session'?'block':'none';
-  const sp=document.getElementById('stats-tab');sp.style.display=tab==='stats'?'block':'none';
-  if(tab==='stats'){sp.classList.add('on');renderStats();}
+  document.getElementById('stats-tab').style.display=tab==='stats'?'block':'none';
+  document.getElementById('backup-tab').style.display=tab==='backup'?'block':'none';
+  if(tab==='stats') renderStats();
+}
+
+// ─── IMPORT / EXPORT ─────────────────────────────────────────────
+function exportData(){
+  const data={
+    version:2,
+    exported:new Date().toISOString(),
+    logs,
+    streak,
+    longestStreak,
+  };
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;
+  a.download=`mochi-backup-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function importData(input){
+  const file=input.files[0];if(!file)return;
+  const status=document.getElementById('import-status');
+  status.textContent='Reading file...';status.style.color='var(--muted)';
+  const reader=new FileReader();
+  reader.onload=async(e)=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!data.logs||!Array.isArray(data.logs)) throw new Error('Invalid format');
+      // Merge — add entries not already present (by date+task)
+      const existing=new Set(logs.map(l=>l.date+'|'+l.task));
+      let added=0;
+      data.logs.forEach(l=>{
+        const key=l.date+'|'+l.task;
+        if(!existing.has(key)){logs.push(l);existing.add(key);added++;}
+      });
+      logs.sort((a,b)=>new Date(b.date)-new Date(a.date));
+      if(data.streak>streak){streak=data.streak;longestStreak=Math.max(longestStreak,data.longestStreak||streak);updateStreakBadge();}
+      await saveLogs();
+      status.textContent=`✓ Imported ${added} new session${added!==1?'s':''} successfully!`;
+      status.style.color='var(--accent)';
+      document.getElementById('import-label').textContent='tap to choose another file';
+    }catch(err){
+      status.textContent='⚠ Could not read file. Make sure it\'s a valid Mochi backup.';
+      status.style.color='rgba(255,107,107,.8)';
+    }
+  };
+  reader.readAsText(file);
 }
 
 function renderStats(){
@@ -1334,7 +1587,7 @@ async function init(){
     {label:"numb / disconnected",value:"numb"},
     {label:"stressed / overwhelmed",value:"stressed"},
     {label:"sad or low",value:"sad"},
-    {label:"I can't even start the session",value:"crisis"},
+    {label:"I can't even open the app right now",value:"crisis"},
     {label:"okay, let's go",value:"okay"},
   ]);
 }
